@@ -81,14 +81,15 @@
         .leaflet-control-layers-list {
             flex: 1 1 auto;
             min-height: 0;
-            overflow: hidden;
-        }
-        .leaflet-control-layers-overlays {
-            height: 100%;
-            max-height: none;
             overflow-y: auto;
             overflow-x: hidden;
+        }
+        .leaflet-control-layers-overlays {
+            height: auto;
+            max-height: none;
+            overflow: visible;
             padding-right: 0.25rem;
+            padding-bottom: 0.25rem;
         }
         @media (max-width: 768px) {
             .page-header-inner {
@@ -113,9 +114,8 @@
     <div class="page-header-inner">
         <div>
             <h1 class="page-title">Stahování dat</h1>
-            <p class="page-help">1. Vyberte pouze jednu vrstvu v seznamu vpravo nahoře v mapě.</p>
-            <p class="page-help">2. Nakreslete obdélník do mapy pomocí nástroje se symbolem čtverce.</p>
-            <p class="page-help">3. Stáhněte připravený GeoTIFF tlačítkem.</p>
+            <p class="page-help">1. Nakreslete obdélník do mapy pomocí nástroje se symbolem čtverce.</p>
+            <p class="page-help">2. Stáhněte připravený GeoTIFF tlačítkem.</p>
         </div>
         <div class="page-actions">
             <a id="downloadBtn" href="#" class="btn btn-primary w-100 disabled">

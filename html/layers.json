@@ -1,0 +1,212 @@
+[
+    {
+        "group_name": "tmax offset",
+        "layers": [
+            {
+                "name": "01",
+                "filename": "s3://1-0/czg1.0_tmax_offset_01.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "02",
+                "filename": "s3://1-0/czg1.0_tmax_offset_02.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "03",
+                "filename": "s3://1-0/czg1.0_tmax_offset_03.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "04",
+                "filename": "s3://1-0/czg1.0_tmax_offset_04.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "05",
+                "filename": "s3://1-0/czg1.0_tmax_offset_05.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "06",
+                "filename": "s3://1-0/czg1.0_tmax_offset_06.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "07",
+                "filename": "s3://1-0/czg1.0_tmax_offset_07.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "08",
+                "filename": "s3://1-0/czg1.0_tmax_offset_08.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "09",
+                "filename": "s3://1-0/czg1.0_tmax_offset_09.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "10",
+                "filename": "s3://1-0/czg1.0_tmax_offset_10.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "11",
+                "filename": "s3://1-0/czg1.0_tmax_offset_11.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "12",
+                "filename": "s3://1-0/czg1.0_tmax_offset_12.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "annual",
+                "filename": "s3://1-0/czg1.0_tmax_offset_annual.tif",
+                "colormap": "gray"
+            }
+        ]
+    },
+    {
+        "group_name": "tmean offset",
+        "layers": [
+            {
+                "name": "01",
+                "filename": "s3://1-0/czg1.0_tmean_offset_01.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "02",
+                "filename": "s3://1-0/czg1.0_tmean_offset_02.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "03",
+                "filename": "s3://1-0/czg1.0_tmean_offset_03.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "04",
+                "filename": "s3://1-0/czg1.0_tmean_offset_04.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "05",
+                "filename": "s3://1-0/czg1.0_tmean_offset_05.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "06",
+                "filename": "s3://1-0/czg1.0_tmean_offset_06.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "07",
+                "filename": "s3://1-0/czg1.0_tmean_offset_07.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "08",
+                "filename": "s3://1-0/czg1.0_tmean_offset_08.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "09",
+                "filename": "s3://1-0/czg1.0_tmean_offset_09.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "10",
+                "filename": "s3://1-0/czg1.0_tmean_offset_10.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "11",
+                "filename": "s3://1-0/czg1.0_tmean_offset_11.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "12",
+                "filename": "s3://1-0/czg1.0_tmean_offset_12.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "annual",
+                "filename": "s3://1-0/czg1.0_tmean_offset_annual.tif",
+                "colormap": "gray"
+            }
+        ]
+    },
+    {
+        "group_name": "tmin offset",
+        "layers": [
+            {
+                "name": "01",
+                "filename": "s3://1-0/czg1.0_tmin_offset_01.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "02",
+                "filename": "s3://1-0/czg1.0_tmin_offset_02.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "03",
+                "filename": "s3://1-0/czg1.0_tmin_offset_03.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "04",
+                "filename": "s3://1-0/czg1.0_tmin_offset_04.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "05",
+                "filename": "s3://1-0/czg1.0_tmin_offset_05.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "06",
+                "filename": "s3://1-0/czg1.0_tmin_offset_06.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "07",
+                "filename": "s3://1-0/czg1.0_tmin_offset_07.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "08",
+                "filename": "s3://1-0/czg1.0_tmin_offset_08.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "09",
+                "filename": "s3://1-0/czg1.0_tmin_offset_09.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "10",
+                "filename": "s3://1-0/czg1.0_tmin_offset_10.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "11",
+                "filename": "s3://1-0/czg1.0_tmin_offset_11.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "12",
+                "filename": "s3://1-0/czg1.0_tmin_offset_12.tif",
+                "colormap": "gray"
+            },
+            {
+                "name": "annual",
+                "filename": "s3://1-0/czg1.0_tmin_offset_annual.tif",
+                "colormap": "gray"
+            }
+        ]
+    }
+]

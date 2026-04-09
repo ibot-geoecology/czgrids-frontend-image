@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stahování výřezů (COG)</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.css" />
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .page-header {
+            flex: 0 0 auto;
+            padding: 1rem 1.25rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .page-header-inner {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .page-title {
+            margin: 0 0 0.5rem;
+            font-size: 1.2rem;
+        }
+        .page-help {
+            margin: 0;
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+        .page-help + .page-help {
+            margin-top: 0.2rem;
+        }
+        .page-actions {
+            flex: 0 0 280px;
+            max-width: 100%;
+        }
+        .map-shell {
+            flex: 1 1 auto;
+            min-height: 0;
+            padding: 0.75rem;
+            background: #e9ecef;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .leaflet-top.leaflet-right {
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .leaflet-right .leaflet-control {
+            margin-bottom: 10px;
+        }
+        .leaflet-control-layers-expanded {
+            display: flex;
+            flex-direction: column;
+            width: 150px;
+            height: calc(100% - 50px);
+            max-height: none;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .leaflet-control-layers-list {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow: hidden;
+        }
+        .leaflet-control-layers-overlays {
+            height: 100%;
+            max-height: none;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 0.25rem;
+        }
+        @media (max-width: 768px) {
+            .page-header-inner {
+                flex-direction: column;
+            }
+            .page-actions {
+                width: 100%;
+                flex-basis: auto;
+            }
+            .map-shell {
+                padding: 0.5rem;
+            }
+            .leaflet-control-layers-expanded {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<header class="page-header">
+    <div class="page-header-inner">
+        <div>
+            <h1 class="page-title">Stahování dat</h1>
+            <p class="page-help">1. Vyberte pouze jednu vrstvu v seznamu vpravo nahoře v mapě.</p>
+            <p class="page-help">2. Nakreslete obdélník do mapy pomocí nástroje se symbolem čtverce.</p>
+            <p class="page-help">3. Stáhněte připravený GeoTIFF tlačítkem.</p>
+        </div>
+        <div class="page-actions">
+            <a id="downloadBtn" href="#" class="btn btn-primary w-100 disabled">
+                Stáhnout GeoTIFF
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="map-shell">
+    <div id="map"></div>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet-groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.js"></script>
+
+<script>
+    const map = L.map('map').setView([49.27, 15.5], 10);
+    const titilerAddress = "https://czgrids.dyn.cloud.e-infra.cz";
+    const layersConfigUrl = './layers.json';
+    const sourceMapCrs = 'EPSG:4326';
+    const outputDownloadCrs = 'EPSG:32633';
+    let currentLayerConfig = null;
+    let currentSelectionBounds = null;
+    let layerControl = null;
+    const cogLayers = [];
+
+    async function populateLayerRescale(layerConfig) {
+        const infoUrl = `${titilerAddress}/cog/info?${new URLSearchParams({ url: layerConfig.filename }).toString()}`;
+
+        try {
+            const response = await fetch(infoUrl);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const info = await response.json();
+            const bandStats = info?.band_metadata?.[0]?.[1];
+            const minValue = Number(bandStats?.STATISTICS_MINIMUM);
+            const maxValue = Number(bandStats?.STATISTICS_MAXIMUM);
+
+            if (Number.isFinite(minValue) && Number.isFinite(maxValue) && minValue !== maxValue) {
+                layerConfig.rescale = `${minValue},${maxValue}`;
+            }
+        } catch (error) {
+            console.warn(`Nepodarilo se nacist rozsah hodnot pro ${layerConfig.name}:`, error);
+        }
+
+        return layerConfig;
+    }
+
+    const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        referrerPolicy: 'origin'
+    }).addTo(map);
+    const baseLayers = { 'OpenStreetMap': osmLayer };
+    layerControl = L.control.groupedLayers(baseLayers, {}, { collapsed: false }).addTo(map);
+
+    function buildTitilerTilesUrl(layerConfig) {
+        const params = new URLSearchParams({
+            url: layerConfig.filename,
+            bidx: '1'
+        });
+
+        if (layerConfig.rescale) {
+            params.set('rescale', layerConfig.rescale);
+        }
+
+        if (layerConfig.colormap) {
+            params.set('colormap_name', layerConfig.colormap);
+        }
+
+        return `${titilerAddress}/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?${params.toString()}`;
+    }
+
+    function sanitizeFilenamePart(value) {
+        return String(value)
+            .trim()
+            .replace(/\s+/g, '_')
+            .replace(/[^A-Za-z0-9._-]/g, '_');
+    }
+
+    function buildDownloadFilename(layerConfig) {
+        const groupName = sanitizeFilenamePart(layerConfig.groupName || 'layer');
+        const layerName = sanitizeFilenamePart(layerConfig.name || 'data');
+
+        return `${groupName}_${layerName}.tif`;
+    }
+
+    function updateDownloadLink() {
+        const btn = document.getElementById('downloadBtn');
+
+        if (!currentLayerConfig || !currentSelectionBounds) {
+            btn.href = '#';
+            btn.dataset.downloadUrl = '';
+            btn.dataset.downloadFilename = '';
+            btn.classList.add('disabled');
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-primary');
+            btn.innerText = 'Stáhnout GeoTIFF';
+            return;
+        }
+
+        const minX = currentSelectionBounds.getWest().toFixed(5);
+        const minY = currentSelectionBounds.getSouth().toFixed(5);
+        const maxX = currentSelectionBounds.getEast().toFixed(5);
+        const maxY = currentSelectionBounds.getNorth().toFixed(5);
+        const params = new URLSearchParams({
+            url: currentLayerConfig.filename,
+            coord_crs: sourceMapCrs,
+            dst_crs: outputDownloadCrs,
+            bidx: '1',
+            resampling_method: 'nearest',
+            return_mask: 'false',
+            nodata: 'nan'
+        });
+
+        const titilerUrl = `${titilerAddress}/cog/bbox/${minX},${minY},${maxX},${maxY}.tif?${params.toString()}`;
+        const downloadFilename = buildDownloadFilename(currentLayerConfig);
+
+        btn.href = titilerUrl;
+        btn.dataset.downloadUrl = titilerUrl;
+        btn.dataset.downloadFilename = downloadFilename;
+        btn.classList.remove('disabled', 'btn-primary');
+        btn.classList.add('btn-success');
+        btn.innerText = `Stáhnout ${downloadFilename}`;
+    }
+
+    async function loadCogLayers() {
+        try {
+            const response = await fetch(layersConfigUrl);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const groups = await response.json();
+            await Promise.all(
+                groups.flatMap((group) => group.layers.map((layerConfig) => populateLayerRescale(layerConfig)))
+            );
+            const overlayLayers = [];
+
+            groups.forEach((group) => {
+                const groupName = group.group_name || 'Ostatni';
+
+                group.layers.forEach((layerConfig) => {
+                    layerConfig.groupName = groupName;
+                    const cogLayer = L.tileLayer(buildTitilerTilesUrl(layerConfig), {
+                        attribution: 'CZECH GRIDS 1.0',
+                        opacity: 0.8,
+                        crossOrigin: true
+                    });
+                    cogLayer.layerConfig = layerConfig;
+                    cogLayers.push(cogLayer);
+
+                    cogLayer.on('tileerror', (e) => {
+                        console.error(`Chyba nacitani raster tile pro ${layerConfig.name}:`, e);
+                    });
+
+                    cogLayer.on('add', () => {
+                        currentLayerConfig = layerConfig;
+                        updateDownloadLink();
+                    });
+
+                    const layerLabel = layerConfig.name;
+
+                    overlayLayers.push({
+                        groupName,
+                        label: layerLabel,
+                        layer: cogLayer,
+                        config: layerConfig
+                    });
+                });
+            });
+
+            if (!overlayLayers.length) {
+                throw new Error('V layers.json nejsou definovane zadne vrstvy.');
+            }
+
+            map.removeControl(layerControl);
+            layerControl = L.control.groupedLayers(baseLayers, {}, { collapsed: false }).addTo(map);
+
+            overlayLayers.forEach((overlayLayer) => {
+                layerControl.addOverlay(overlayLayer.layer, overlayLayer.label, overlayLayer.groupName);
+            });
+
+            const defaultLayer = overlayLayers[0];
+            currentLayerConfig = defaultLayer.config;
+            defaultLayer.layer.addTo(map);
+        } catch (error) {
+            console.error('Nepodarilo se nacist layers.json:', error);
+        }
+    }
+
+    map.on('overlayadd', (event) => {
+        currentLayerConfig = event.layer.layerConfig || null;
+
+        updateDownloadLink();
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', async (event) => {
+        const btn = event.currentTarget;
+        const downloadUrl = btn.dataset.downloadUrl;
+        const downloadFilename = btn.dataset.downloadFilename || 'download.tif';
+
+        if (btn.classList.contains('disabled') || !downloadUrl) {
+            event.preventDefault();
+            return;
+        }
+
+        event.preventDefault();
+
+        const originalText = btn.innerText;
+
+        try {
+            btn.classList.add('disabled');
+            btn.innerText = 'Stahuji...';
+
+            const response = await fetch(downloadUrl);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const blob = await response.blob();
+            const objectUrl = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+
+            link.href = objectUrl;
+            link.download = downloadFilename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(objectUrl);
+        } catch (error) {
+            console.error('Nepodarilo se stahnout GeoTIFF:', error);
+            window.open(downloadUrl, '_blank', 'noopener');
+        } finally {
+            btn.classList.remove('disabled');
+            btn.innerText = originalText;
+        }
+    });
+
+    loadCogLayers();
+
+    map.pm.addControls({
+        position: 'topleft',
+        drawMarker: false,
+        drawCircleMarker: false,
+        drawPolyline: false,
+        drawPolygon: false,
+        drawCircle: false,
+        drawText: false,
+        drawRectangle: true,
+        editMode: true,
+        dragMode: false,
+        cutPolygon: false,
+        removalMode: true,
+    });
+
+    map.on('pm:create', (e) => {
+        const layer = e.layer;
+        
+        currentSelectionBounds = layer.getBounds();
+        
+        const minX = currentSelectionBounds.getWest().toFixed(5);
+        const minY = currentSelectionBounds.getSouth().toFixed(5);
+        const maxX = currentSelectionBounds.getEast().toFixed(5);
+        const maxY = currentSelectionBounds.getNorth().toFixed(5);
+
+        console.log(`Vybrán BBox: ${minX}, ${minY}, ${maxX}, ${maxY}`);
+
+        updateDownloadLink();
+    });
+
+    map.on('pm:remove', () => {
+        currentSelectionBounds = null;
+        updateDownloadLink();
+    });
+</script>
+</body>
+</html>

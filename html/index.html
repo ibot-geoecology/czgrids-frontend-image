@@ -141,6 +141,7 @@
     const outputDownloadCrs = 'EPSG:32633';
     let currentLayerConfig = null;
     let currentSelectionBounds = null;
+    let currentSelectionLayer = null;
     let layerControl = null;
     const cogLayers = [];
 
@@ -373,6 +374,7 @@
         drawText: false,
         drawRectangle: true,
         editMode: true,
+        rotateMode: false,
         dragMode: false,
         cutPolygon: false,
         removalMode: true,
@@ -380,6 +382,12 @@
 
     map.on('pm:create', (e) => {
         const layer = e.layer;
+
+        if (currentSelectionLayer && currentSelectionLayer !== layer && map.hasLayer(currentSelectionLayer)) {
+            map.removeLayer(currentSelectionLayer);
+        }
+
+        currentSelectionLayer = layer;
         
         currentSelectionBounds = layer.getBounds();
         
@@ -394,6 +402,7 @@
     });
 
     map.on('pm:remove', () => {
+        currentSelectionLayer = null;
         currentSelectionBounds = null;
         updateDownloadLink();
     });

@@ -36,6 +36,15 @@
             margin: 0 0 0.5rem;
             font-size: 1.2rem;
         }
+        .page-intro {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .page-help-wrap {
+            min-width: 0;
+        }
         .page-help {
             margin: 0;
             color: #6c757d;
@@ -45,8 +54,28 @@
             margin-top: 0.2rem;
         }
         .page-actions {
-            flex: 0 0 280px;
+            flex: 0 0 250px;
             max-width: 100%;
+        }
+        .page-controls-row {
+            display: block;
+        }
+        .layer-opacity-panel {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .active-layer-name {
+            margin: 0 0 0.25rem;
+            color: #495057;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .download-action {
+            flex: 0 0 auto;
+            white-space: nowrap;
         }
         .map-shell {
             flex: 1 1 auto;
@@ -99,6 +128,12 @@
                 width: 100%;
                 flex-basis: auto;
             }
+            .page-intro {
+                flex-direction: column;
+            }
+            .download-action {
+                width: 100%;
+            }
             .map-shell {
                 padding: 0.5rem;
             }
@@ -114,19 +149,27 @@
     <div class="page-header-inner">
         <div>
             <h1 class="page-title">Stahování dat</h1>
-            <p class="page-help">1. Nakreslete obdélník do mapy pomocí nástroje se symbolem čtverce.</p>
-            <p class="page-help">2. Stáhněte připravený GeoTIFF tlačítkem.</p>
+            <div class="page-intro">
+                <div class="page-help-wrap">
+                    <p class="page-help">1. Nakreslete obdélník do mapy pomocí nástroje se symbolem čtverce.</p>
+                    <p class="page-help">2. Stáhněte tlačítkem:
+                        <a id="downloadBtn" href="#" class="btn btn-primary disabled download-action">
+                            Stáhnout GeoTIFF
+                        </a>
+                    </p>
+                </div>
+            </div>
         </div>
         <div class="page-actions">
-            <div class="mb-2">
-                <label for="opacitySlider" class="form-label mb-1" style="font-size:0.85rem;color:#6c757d">
-                    Průhlednost vrstvy: <span id="opacityValue">80 %</span>
-                </label>
-                <input type="range" class="form-range" id="opacitySlider" min="0" max="1" step="0.05" value="0.8">
+            <div class="page-controls-row">
+                <div class="layer-opacity-panel">
+                    <p id="activeLayerName" class="active-layer-name">-</p>
+                    <label for="opacitySlider" class="form-label mb-1" style="font-size:0.85rem;color:#6c757d">
+                        Průhlednost vrstvy: <span id="opacityValue">80 %</span>
+                    </label>
+                    <input type="range" class="form-range" id="opacitySlider" min="0" max="1" step="0.05" value="0.8">
+                </div>
             </div>
-            <a id="downloadBtn" href="#" class="btn btn-primary w-100 disabled">
-                Stáhnout GeoTIFF
-            </a>
         </div>
     </div>
 </header>
@@ -152,26 +195,12 @@
     let layerControl = null;
     const cogLayers = [];
 
-    async function populateLayerRescale(layerConfig) {
-        const infoUrl = `${titilerAddress}/cog/info?${new URLSearchParams({ url: layerConfig.filename }).toString()}`;
+    function populateLayerRescale(layerConfig) {
+        const minValue = Number(layerConfig.colors_min);
+        const maxValue = Number(layerConfig.colors_max);
 
-        try {
-            const response = await fetch(infoUrl);
-
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
-
-            const info = await response.json();
-            const bandStats = info?.band_metadata?.[0]?.[1];
-            const minValue = Number(bandStats?.STATISTICS_MINIMUM);
-            const maxValue = Number(bandStats?.STATISTICS_MAXIMUM);
-
-            if (Number.isFinite(minValue) && Number.isFinite(maxValue) && minValue !== maxValue) {
-                layerConfig.rescale = `${minValue},${maxValue}`;
-            }
-        } catch (error) {
-            console.warn(`Nepodarilo se nacist rozsah hodnot pro ${layerConfig.name}:`, error);
+        if (Number.isFinite(minValue) && Number.isFinite(maxValue) && minValue !== maxValue) {
+            layerConfig.rescale = `${minValue},${maxValue}`;
         }
 
         return layerConfig;
@@ -213,6 +242,24 @@
         const layerName = sanitizeFilenamePart(layerConfig.name || 'data');
 
         return `${groupName}_${layerName}.tif`;
+    }
+
+    function updateLayerDisplay(layerConfig, leafletLayer) {
+        const layerNameLabel = document.getElementById('activeLayerName');
+        const slider = document.getElementById('opacitySlider');
+        const opacityValue = document.getElementById('opacityValue');
+
+        if (!layerConfig || !leafletLayer) {
+            layerNameLabel.textContent = '-';
+            slider.value = 0.8;
+            opacityValue.textContent = '80 %';
+            return;
+        }
+
+        layerNameLabel.textContent = `${layerConfig.groupName || '-'} ${layerConfig.name || '-'}`;
+        const opVal = leafletLayer.options.opacity ?? 0.8;
+        slider.value = opVal;
+        opacityValue.textContent = Math.round(opVal * 100) + ' %';
     }
 
     function updateDownloadLink() {
@@ -263,9 +310,9 @@
             }
 
             const groups = await response.json();
-            await Promise.all(
-                groups.flatMap((group) => group.layers.map((layerConfig) => populateLayerRescale(layerConfig)))
-            );
+            groups.forEach((group) => {
+                group.layers.forEach((layerConfig) => populateLayerRescale(layerConfig));
+            });
             const overlayLayers = [];
 
             groups.forEach((group) => {
@@ -288,10 +335,7 @@
                     cogLayer.on('add', () => {
                         currentLayerConfig = layerConfig;
                         currentLeafletLayer = cogLayer;
-                        const slider = document.getElementById('opacitySlider');
-                        const opVal = cogLayer.options.opacity ?? 0.8;
-                        slider.value = opVal;
-                        document.getElementById('opacityValue').textContent = Math.round(opVal * 100) + ' %';
+                        updateLayerDisplay(currentLayerConfig, currentLeafletLayer);
                         updateDownloadLink();
                     });
 
@@ -328,10 +372,7 @@
     map.on('overlayadd', (event) => {
         currentLayerConfig = event.layer.layerConfig || null;
         currentLeafletLayer = event.layer;
-        const opVal = event.layer.options.opacity ?? 0.8;
-        const slider = document.getElementById('opacitySlider');
-        slider.value = opVal;
-        document.getElementById('opacityValue').textContent = Math.round(opVal * 100) + ' %';
+        updateLayerDisplay(currentLayerConfig, currentLeafletLayer);
         updateDownloadLink();
     });
 

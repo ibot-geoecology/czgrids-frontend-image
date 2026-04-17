@@ -1,212 +1,485 @@
 [
-    {
-        "group_name": "tmax offset",
-        "layers": [
-            {
-                "name": "01",
-                "filename": "s3://1-0/czg1.0_tmax_offset_01.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "02",
-                "filename": "s3://1-0/czg1.0_tmax_offset_02.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "03",
-                "filename": "s3://1-0/czg1.0_tmax_offset_03.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "04",
-                "filename": "s3://1-0/czg1.0_tmax_offset_04.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "05",
-                "filename": "s3://1-0/czg1.0_tmax_offset_05.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "06",
-                "filename": "s3://1-0/czg1.0_tmax_offset_06.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "07",
-                "filename": "s3://1-0/czg1.0_tmax_offset_07.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "08",
-                "filename": "s3://1-0/czg1.0_tmax_offset_08.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "09",
-                "filename": "s3://1-0/czg1.0_tmax_offset_09.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "10",
-                "filename": "s3://1-0/czg1.0_tmax_offset_10.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "11",
-                "filename": "s3://1-0/czg1.0_tmax_offset_11.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "12",
-                "filename": "s3://1-0/czg1.0_tmax_offset_12.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "annual",
-                "filename": "s3://1-0/czg1.0_tmax_offset_annual.tif",
-                "colormap": "gray"
-            }
-        ]
-    },
-    {
-        "group_name": "tmean offset",
-        "layers": [
-            {
-                "name": "01",
-                "filename": "s3://1-0/czg1.0_tmean_offset_01.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "02",
-                "filename": "s3://1-0/czg1.0_tmean_offset_02.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "03",
-                "filename": "s3://1-0/czg1.0_tmean_offset_03.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "04",
-                "filename": "s3://1-0/czg1.0_tmean_offset_04.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "05",
-                "filename": "s3://1-0/czg1.0_tmean_offset_05.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "06",
-                "filename": "s3://1-0/czg1.0_tmean_offset_06.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "07",
-                "filename": "s3://1-0/czg1.0_tmean_offset_07.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "08",
-                "filename": "s3://1-0/czg1.0_tmean_offset_08.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "09",
-                "filename": "s3://1-0/czg1.0_tmean_offset_09.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "10",
-                "filename": "s3://1-0/czg1.0_tmean_offset_10.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "11",
-                "filename": "s3://1-0/czg1.0_tmean_offset_11.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "12",
-                "filename": "s3://1-0/czg1.0_tmean_offset_12.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "annual",
-                "filename": "s3://1-0/czg1.0_tmean_offset_annual.tif",
-                "colormap": "gray"
-            }
-        ]
-    },
-    {
-        "group_name": "tmin offset",
-        "layers": [
-            {
-                "name": "01",
-                "filename": "s3://1-0/czg1.0_tmin_offset_01.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "02",
-                "filename": "s3://1-0/czg1.0_tmin_offset_02.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "03",
-                "filename": "s3://1-0/czg1.0_tmin_offset_03.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "04",
-                "filename": "s3://1-0/czg1.0_tmin_offset_04.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "05",
-                "filename": "s3://1-0/czg1.0_tmin_offset_05.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "06",
-                "filename": "s3://1-0/czg1.0_tmin_offset_06.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "07",
-                "filename": "s3://1-0/czg1.0_tmin_offset_07.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "08",
-                "filename": "s3://1-0/czg1.0_tmin_offset_08.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "09",
-                "filename": "s3://1-0/czg1.0_tmin_offset_09.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "10",
-                "filename": "s3://1-0/czg1.0_tmin_offset_10.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "11",
-                "filename": "s3://1-0/czg1.0_tmin_offset_11.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "12",
-                "filename": "s3://1-0/czg1.0_tmin_offset_12.tif",
-                "colormap": "gray"
-            },
-            {
-                "name": "annual",
-                "filename": "s3://1-0/czg1.0_tmin_offset_annual.tif",
-                "colormap": "gray"
-            }
-        ]
-    }
+  {
+    "group_name": "tmax offset",
+    "layers": [
+      {
+        "name": "01",
+        "filename": "s3://1-0/czg1.0_tmax_offset_01.tif",
+        "colormap": "magma",
+        "min": -5.937142372131348,
+        "max": 1.4460771083831787,
+        "mean": -0.09361372888088226,
+        "std": 0.5593001246452332,
+        "count": 792352058,
+        "colors_min": -1.2122139930725098,
+        "colors_max": 1.0249865055084229
+      },
+      {
+        "name": "02",
+        "filename": "s3://1-0/czg1.0_tmax_offset_02.tif",
+        "colormap": "magma",
+        "min": -5.6826653480529785,
+        "max": 1.6658053398132324,
+        "mean": 0.11884080618619919,
+        "std": 0.5527186393737793,
+        "count": 792352058,
+        "colors_min": -0.9865964651107788,
+        "colors_max": 1.2242780923843384
+      },
+      {
+        "name": "03",
+        "filename": "s3://1-0/czg1.0_tmax_offset_03.tif",
+        "colormap": "magma",
+        "min": -5.3416666984558105,
+        "max": 2.11226224899292,
+        "mean": 0.45833295583724976,
+        "std": 0.6261435151100159,
+        "count": 791280803,
+        "colors_min": -0.793954074382782,
+        "colors_max": 1.7106199264526367
+      },
+      {
+        "name": "04",
+        "filename": "s3://1-0/czg1.0_tmax_offset_04.tif",
+        "colormap": "magma",
+        "min": -4.931726455688477,
+        "max": 2.4601807594299316,
+        "mean": 0.7975056767463684,
+        "std": 0.652504563331604,
+        "count": 791280803,
+        "colors_min": -0.5075034499168396,
+        "colors_max": 2.1025147438049316
+      },
+      {
+        "name": "05",
+        "filename": "s3://1-0/czg1.0_tmax_offset_05.tif",
+        "colormap": "magma",
+        "min": -4.554782867431641,
+        "max": 2.67299485206604,
+        "mean": 1.0354269742965698,
+        "std": 0.6111729741096497,
+        "count": 791280803,
+        "colors_min": -0.1869189739227295,
+        "colors_max": 2.257772922515869
+      },
+      {
+        "name": "06",
+        "filename": "s3://1-0/czg1.0_tmax_offset_06.tif",
+        "colormap": "magma",
+        "min": -4.865077495574951,
+        "max": 2.8994436264038086,
+        "mean": 1.1221734285354614,
+        "std": 0.6446202993392944,
+        "count": 791280803,
+        "colors_min": -0.16706717014312744,
+        "colors_max": 2.41141414642334
+      },
+      {
+        "name": "07",
+        "filename": "s3://1-0/czg1.0_tmax_offset_07.tif",
+        "colormap": "magma",
+        "min": -5.171693325042725,
+        "max": 2.951045036315918,
+        "mean": 1.016695499420166,
+        "std": 0.7269871830940247,
+        "count": 791280803,
+        "colors_min": -0.4372788667678833,
+        "colors_max": 2.470669746398926
+      },
+      {
+        "name": "08",
+        "filename": "s3://1-0/czg1.0_tmax_offset_08.tif",
+        "colormap": "magma",
+        "min": -5.392637252807617,
+        "max": 2.560286045074463,
+        "mean": 0.7472020387649536,
+        "std": 0.7885905504226685,
+        "count": 791280803,
+        "colors_min": -0.8299790620803833,
+        "colors_max": 2.32438325881958
+      },
+      {
+        "name": "09",
+        "filename": "s3://1-0/czg1.0_tmax_offset_09.tif",
+        "colormap": "magma",
+        "min": -5.6736226081848145,
+        "max": 2.2552528381347656,
+        "mean": 0.41114822030067444,
+        "std": 0.818550169467926,
+        "count": 791280803,
+        "colors_min": -1.2259521484375,
+        "colors_max": 2.048248529434204
+      },
+      {
+        "name": "10",
+        "filename": "s3://1-0/czg1.0_tmax_offset_10.tif",
+        "colormap": "magma",
+        "min": -6.016427516937256,
+        "max": 1.886526346206665,
+        "mean": 0.10695578902959824,
+        "std": 0.7664589285850525,
+        "count": 792352058,
+        "colors_min": -1.4259620904922485,
+        "colors_max": 1.6398736238479614
+      },
+      {
+        "name": "11",
+        "filename": "s3://1-0/czg1.0_tmax_offset_11.tif",
+        "colormap": "magma",
+        "min": -6.074499130249023,
+        "max": 1.5636720657348633,
+        "mean": -0.08494970947504044,
+        "std": 0.6553881168365479,
+        "count": 792352058,
+        "colors_min": -1.395725965499878,
+        "colors_max": 1.2258265018463135
+      },
+      {
+        "name": "12",
+        "filename": "s3://1-0/czg1.0_tmax_offset_12.tif",
+        "colormap": "magma",
+        "min": -5.937142372131348,
+        "max": 1.4460771083831787,
+        "mean": -0.09361375123262405,
+        "std": 0.5593001842498779,
+        "count": 792352058,
+        "colors_min": -1.2122141122817993,
+        "colors_max": 1.0249866247177124
+      },
+      {
+        "name": "annual",
+        "filename": "s3://1-0/czg1.0_tmax_offset_annual.tif",
+        "colormap": "magma",
+        "min": -5.340062618255615,
+        "max": 2.1127490997314453,
+        "mean": 0.4612194299697876,
+        "std": 0.6316025257110596,
+        "count": 792352058,
+        "colors_min": -0.8019856214523315,
+        "colors_max": 1.7244244813919067
+      }
+    ]
+  },
+  {
+    "group_name": "tmean offset",
+    "layers": [
+      {
+        "name": "01",
+        "filename": "s3://1-0/czg1.0_tmean_offset_01.tif",
+        "colormap": "cividis",
+        "min": -3.1328513622283936,
+        "max": 1.1980998516082764,
+        "mean": -0.009367587976157665,
+        "std": 0.18418842554092407,
+        "count": 789084655,
+        "colors_min": -0.3777444362640381,
+        "colors_max": 0.3590092658996582
+      },
+      {
+        "name": "02",
+        "filename": "s3://1-0/czg1.0_tmean_offset_02.tif",
+        "colormap": "cividis",
+        "min": -3.16497802734375,
+        "max": 1.4604191780090332,
+        "mean": 0.08633288741111755,
+        "std": 0.23550496995449066,
+        "count": 789084655,
+        "colors_min": -0.38467705249786377,
+        "colors_max": 0.5573428273200989
+      },
+      {
+        "name": "03",
+        "filename": "s3://1-0/czg1.0_tmean_offset_03.tif",
+        "colormap": "cividis",
+        "min": -3.464524984359741,
+        "max": 1.915500521659851,
+        "mean": 0.0557825043797493,
+        "std": 0.34492623805999756,
+        "count": 789084655,
+        "colors_min": -0.6340699791908264,
+        "colors_max": 0.7456349730491638
+      },
+      {
+        "name": "04",
+        "filename": "s3://1-0/czg1.0_tmean_offset_04.tif",
+        "colormap": "cividis",
+        "min": -3.7437736988067627,
+        "max": 2.150630474090576,
+        "mean": -0.047989606857299805,
+        "std": 0.40737324953079224,
+        "count": 789084655,
+        "colors_min": -0.8627361059188843,
+        "colors_max": 0.7667568922042847
+      },
+      {
+        "name": "05",
+        "filename": "s3://1-0/czg1.0_tmean_offset_05.tif",
+        "colormap": "cividis",
+        "min": -3.859309196472168,
+        "max": 1.9402669668197632,
+        "mean": -0.18613949418067932,
+        "std": 0.38246846199035645,
+        "count": 789084655,
+        "colors_min": -0.9510763883590698,
+        "colors_max": 0.578797459602356
+      },
+      {
+        "name": "06",
+        "filename": "s3://1-0/czg1.0_tmean_offset_06.tif",
+        "colormap": "cividis",
+        "min": -3.9388694763183594,
+        "max": 1.745126724243164,
+        "mean": -0.34737780690193176,
+        "std": 0.3526890277862549,
+        "count": 789084655,
+        "colors_min": -1.0527558326721191,
+        "colors_max": 0.358000248670578
+      },
+      {
+        "name": "07",
+        "filename": "s3://1-0/czg1.0_tmean_offset_07.tif",
+        "colormap": "cividis",
+        "min": -4.133333683013916,
+        "max": 1.5608235597610474,
+        "mean": -0.5219741463661194,
+        "std": 0.3689734637737274,
+        "count": 789084655,
+        "colors_min": -1.2599210739135742,
+        "colors_max": 0.21597278118133545
+      },
+      {
+        "name": "08",
+        "filename": "s3://1-0/czg1.0_tmean_offset_08.tif",
+        "colormap": "cividis",
+        "min": -4.390700340270996,
+        "max": 1.4760221242904663,
+        "mean": -0.6632385849952698,
+        "std": 0.41216132044792175,
+        "count": 789084655,
+        "colors_min": -1.4875612258911133,
+        "colors_max": 0.16108405590057373
+      },
+      {
+        "name": "09",
+        "filename": "s3://1-0/czg1.0_tmean_offset_09.tif",
+        "colormap": "cividis",
+        "min": -4.456087112426758,
+        "max": 1.4174320697784424,
+        "mean": -0.6875253319740295,
+        "std": 0.4280022978782654,
+        "count": 789084655,
+        "colors_min": -1.543529987335205,
+        "colors_max": 0.16847926378250122
+      },
+      {
+        "name": "10",
+        "filename": "s3://1-0/czg1.0_tmean_offset_10.tif",
+        "colormap": "cividis",
+        "min": -4.1118245124816895,
+        "max": 1.2439578771591187,
+        "mean": -0.5258803367614746,
+        "std": 0.3551134765148163,
+        "count": 789084655,
+        "colors_min": -1.236107349395752,
+        "colors_max": 0.18434661626815796
+      },
+      {
+        "name": "11",
+        "filename": "s3://1-0/czg1.0_tmean_offset_11.tif",
+        "colormap": "cividis",
+        "min": -3.5409061908721924,
+        "max": 1.1096168756484985,
+        "mean": -0.2511858344078064,
+        "std": 0.24026846885681152,
+        "count": 789084655,
+        "colors_min": -0.7317227721214294,
+        "colors_max": 0.22935110330581665
+      },
+      {
+        "name": "12",
+        "filename": "s3://1-0/czg1.0_tmean_offset_12.tif",
+        "colormap": "cividis",
+        "min": -3.132624387741089,
+        "max": 1.1980998516082764,
+        "mean": -0.009367566555738449,
+        "std": 0.18418845534324646,
+        "count": 789084655,
+        "colors_min": -0.3777444660663605,
+        "colors_max": 0.35900935530662537
+      },
+      {
+        "name": "annual",
+        "filename": "s3://1-0/czg1.0_tmean_offset_annual.tif",
+        "colormap": "cividis",
+        "min": -3.755815267562866,
+        "max": 1.4872163534164429,
+        "mean": -0.2589610517024994,
+        "std": 0.31480905413627625,
+        "count": 789084655,
+        "colors_min": -0.8885791301727295,
+        "colors_max": 0.3706570565700531
+      }
+    ]
+  },
+  {
+    "group_name": "tmin offset",
+    "layers": [
+      {
+        "name": "01",
+        "filename": "s3://1-0/czg1.0_tmin_offset_01.tif",
+        "colormap": "viridis",
+        "min": -2.3431754112243652,
+        "max": 3.6621673107147217,
+        "mean": -0.13966479897499084,
+        "std": 0.5016844272613525,
+        "count": 789084655,
+        "colors_min": -1.1430336236953735,
+        "colors_max": 0.8637040853500366
+      },
+      {
+        "name": "02",
+        "filename": "s3://1-0/czg1.0_tmin_offset_02.tif",
+        "colormap": "viridis",
+        "min": -2.601052761077881,
+        "max": 3.8891026973724365,
+        "mean": -0.10991707444190979,
+        "std": 0.5817082524299622,
+        "count": 789084655,
+        "colors_min": -1.2733335494995117,
+        "colors_max": 1.053499460220337
+      },
+      {
+        "name": "03",
+        "filename": "s3://1-0/czg1.0_tmin_offset_03.tif",
+        "colormap": "viridis",
+        "min": -3.5229272842407227,
+        "max": 4.158660888671875,
+        "mean": -0.36357203125953674,
+        "std": 0.7749931812286377,
+        "count": 789084655,
+        "colors_min": -1.9135583639144897,
+        "colors_max": 1.186414361000061
+      },
+      {
+        "name": "04",
+        "filename": "s3://1-0/czg1.0_tmin_offset_04.tif",
+        "colormap": "viridis",
+        "min": -4.393533706665039,
+        "max": 4.2834062576293945,
+        "mean": -0.7353923916816711,
+        "std": 0.9333148002624512,
+        "count": 789084655,
+        "colors_min": -2.6020219326019287,
+        "colors_max": 1.131237268447876
+      },
+      {
+        "name": "05",
+        "filename": "s3://1-0/czg1.0_tmin_offset_05.tif",
+        "colormap": "viridis",
+        "min": -4.837368011474609,
+        "max": 4.2110090255737305,
+        "mean": -1.1008163690567017,
+        "std": 0.9726309180259705,
+        "count": 789084655,
+        "colors_min": -3.0460782051086426,
+        "colors_max": 0.8444454669952393
+      },
+      {
+        "name": "06",
+        "filename": "s3://1-0/czg1.0_tmin_offset_06.tif",
+        "colormap": "viridis",
+        "min": -5.048967361450195,
+        "max": 3.997781991958618,
+        "mean": -1.4143160581588745,
+        "std": 0.9614575505256653,
+        "count": 789084655,
+        "colors_min": -3.337231159210205,
+        "colors_max": 0.508599042892456
+      },
+      {
+        "name": "07",
+        "filename": "s3://1-0/czg1.0_tmin_offset_07.tif",
+        "colormap": "viridis",
+        "min": -5.27501106262207,
+        "max": 3.709428071975708,
+        "mean": -1.638465404510498,
+        "std": 0.9783299565315247,
+        "count": 789084655,
+        "colors_min": -3.595125198364258,
+        "colors_max": 0.31819450855255127
+      },
+      {
+        "name": "08",
+        "filename": "s3://1-0/czg1.0_tmin_offset_08.tif",
+        "colormap": "viridis",
+        "min": -5.455053329467773,
+        "max": 3.4323487281799316,
+        "mean": -1.7133259773254395,
+        "std": 1.0178414583206177,
+        "count": 789084655,
+        "colors_min": -3.749008893966675,
+        "colors_max": 0.3223569393157959
+      },
+      {
+        "name": "09",
+        "filename": "s3://1-0/czg1.0_tmin_offset_09.tif",
+        "colormap": "viridis",
+        "min": -5.221522331237793,
+        "max": 3.2352724075317383,
+        "mean": -1.5564426183700562,
+        "std": 0.9927005171775818,
+        "count": 789084655,
+        "colors_min": -3.5418436527252197,
+        "colors_max": 0.4289584159851074
+      },
+      {
+        "name": "10",
+        "filename": "s3://1-0/czg1.0_tmin_offset_10.tif",
+        "colormap": "viridis",
+        "min": -4.27598762512207,
+        "max": 3.2054216861724854,
+        "mean": -1.1103248596191406,
+        "std": 0.8287573456764221,
+        "count": 789084655,
+        "colors_min": -2.7678394317626953,
+        "colors_max": 0.5471898317337036
+      },
+      {
+        "name": "11",
+        "filename": "s3://1-0/czg1.0_tmin_offset_11.tif",
+        "colormap": "viridis",
+        "min": -3.038029193878174,
+        "max": 3.336352586746216,
+        "mean": -0.5432335138320923,
+        "std": 0.6129823923110962,
+        "count": 789084655,
+        "colors_min": -1.7691982984542847,
+        "colors_max": 0.6827312707901001
+      },
+      {
+        "name": "12",
+        "filename": "s3://1-0/czg1.0_tmin_offset_12.tif",
+        "colormap": "viridis",
+        "min": -2.3431754112243652,
+        "max": 3.6621673107147217,
+        "mean": -0.13966484367847443,
+        "std": 0.5016843676567078,
+        "count": 789084655,
+        "colors_min": -1.1430336236953735,
+        "colors_max": 0.8637039065361023
+      },
+      {
+        "name": "annual",
+        "filename": "s3://1-0/czg1.0_tmin_offset_annual.tif",
+        "colormap": "viridis",
+        "min": -4.021942138671875,
+        "max": 3.7182626724243164,
+        "mean": -0.8803448677062988,
+        "std": 0.8004170656204224,
+        "count": 789084655,
+        "colors_min": -2.4811789989471436,
+        "colors_max": 0.7204892635345459
+      }
+    ]
+  }
 ]

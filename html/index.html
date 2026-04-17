@@ -118,6 +118,12 @@
             <p class="page-help">2. Stáhněte připravený GeoTIFF tlačítkem.</p>
         </div>
         <div class="page-actions">
+            <div class="mb-2">
+                <label for="opacitySlider" class="form-label mb-1" style="font-size:0.85rem;color:#6c757d">
+                    Průhlednost vrstvy: <span id="opacityValue">80 %</span>
+                </label>
+                <input type="range" class="form-range" id="opacitySlider" min="0" max="1" step="0.05" value="0.8">
+            </div>
             <a id="downloadBtn" href="#" class="btn btn-primary w-100 disabled">
                 Stáhnout GeoTIFF
             </a>
@@ -134,12 +140,13 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet-groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.js"></script>
 
 <script>
-    const map = L.map('map').setView([49.27, 15.5], 10);
+    const map = L.map('map').setView([49.8, 15.9], 8);
     const titilerAddress = "https://czgrids.dyn.cloud.e-infra.cz";
     const layersConfigUrl = './layers.json';
     const sourceMapCrs = 'EPSG:4326';
     const outputDownloadCrs = 'EPSG:32633';
     let currentLayerConfig = null;
+    let currentLeafletLayer = null;
     let currentSelectionBounds = null;
     let currentSelectionLayer = null;
     let layerControl = null;
@@ -280,6 +287,11 @@
 
                     cogLayer.on('add', () => {
                         currentLayerConfig = layerConfig;
+                        currentLeafletLayer = cogLayer;
+                        const slider = document.getElementById('opacitySlider');
+                        const opVal = cogLayer.options.opacity ?? 0.8;
+                        slider.value = opVal;
+                        document.getElementById('opacityValue').textContent = Math.round(opVal * 100) + ' %';
                         updateDownloadLink();
                     });
 
@@ -315,8 +327,20 @@
 
     map.on('overlayadd', (event) => {
         currentLayerConfig = event.layer.layerConfig || null;
-
+        currentLeafletLayer = event.layer;
+        const opVal = event.layer.options.opacity ?? 0.8;
+        const slider = document.getElementById('opacitySlider');
+        slider.value = opVal;
+        document.getElementById('opacityValue').textContent = Math.round(opVal * 100) + ' %';
         updateDownloadLink();
+    });
+
+    document.getElementById('opacitySlider').addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value);
+        document.getElementById('opacityValue').textContent = Math.round(val * 100) + ' %';
+        if (currentLeafletLayer) {
+            currentLeafletLayer.setOpacity(val);
+        }
     });
 
     document.getElementById('downloadBtn').addEventListener('click', async (event) => {

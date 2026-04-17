@@ -174,6 +174,12 @@
     </div>
 </header>
 
+<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none; position:fixed; top:20px; left:20px; right:20px; z-index:9999; max-width:600px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+    <strong id="errorTitle">Chyba</strong>
+    <p id="errorMessage" style="margin:0.5rem 0 0 0;" class="mb-0"></p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Zavřít"></button>
+</div>
+
 <main class="map-shell">
     <div id="map"></div>
 </main>
@@ -188,7 +194,34 @@
     const layersConfigUrl = './layers.json';
     const sourceMapCrs = 'EPSG:4326';
     const outputDownloadCrs = 'EPSG:32633';
+    const maxDownloadMegapixels = 120;
     let currentLayerConfig = null;
+
+    function hideErrorMessage() {
+        const alert = document.getElementById('errorAlert');
+        alert.style.display = 'none';
+        alert.classList.remove('show');
+    }
+
+    function showErrorMessage(title, message, autoDismissMs = 0) {
+        const alert = document.getElementById('errorAlert');
+        const titleEl = document.getElementById('errorTitle');
+        const msgEl = document.getElementById('errorMessage');
+
+        titleEl.textContent = title;
+        msgEl.textContent = message;
+        alert.style.display = 'block';
+        alert.classList.add('show');
+
+        if (autoDismissMs > 0) {
+            setTimeout(() => {
+                hideErrorMessage();
+            }, autoDismissMs);
+        }
+    }
+
+    document.querySelector('#errorAlert .btn-close').addEventListener('click', hideErrorMessage);
+
     let currentLeafletLayer = null;
     let currentSelectionBounds = null;
     let currentSelectionLayer = null;
@@ -343,6 +376,18 @@
         return `${minLabel}-${maxLabel}`;
     }
 
+    function getMaxSelectionMegapixels(selectedConfigs, bounds) {
+        const megapixels = selectedConfigs
+            .map((config) => calculateBBoxMegapixels(bounds, config.res))
+            .filter((value) => Number.isFinite(value));
+
+        if (!megapixels.length) {
+            return null;
+        }
+
+        return Math.max(...megapixels);
+    }
+
     function buildDownloadUrl(layerConfig, bounds) {
         const minX = bounds.getWest().toFixed(5);
         const minY = bounds.getSouth().toFixed(5);
@@ -411,13 +456,24 @@
         }
 
         const megapixelSummary = buildMegapixelSummary(selectedConfigs, currentSelectionBounds);
+        const maxMegapixels = getMaxSelectionMegapixels(selectedConfigs, currentSelectionBounds);
+        const exceedsDownloadLimit = Number.isFinite(maxMegapixels) && maxMegapixels > maxDownloadMegapixels;
         const megapixelSuffix = megapixelSummary ? `, ${megapixelSummary}` : '';
         const label = selectedConfigs.length === 1
             ? `Stáhnout ${buildDownloadFilename(selectedConfigs[0])} (${megapixelSummary || '?'})`
             : `Stáhnout GeoTIFF vrstvy (${selectedConfigs.length}${megapixelSuffix})`;
 
         btn.href = '#';
-        btn.classList.remove('disabled', 'btn-primary');
+
+        if (exceedsDownloadLimit) {
+            btn.classList.add('disabled');
+            btn.classList.remove('btn-primary', 'btn-success');
+            btn.classList.add('btn-danger');
+            btn.innerText = `${label} - max 120 MP`;
+            return;
+        }
+
+        btn.classList.remove('disabled', 'btn-primary', 'btn-danger');
         btn.classList.add('btn-success');
         btn.innerText = label;
     }
@@ -500,7 +556,12 @@
             currentLayerConfig = defaultLayer.config;
             defaultLayer.layer.addTo(map);
         } catch (error) {
+            const errorMsg = (error && error.message) ? error.message : String(error);
             console.error('Nepodarilo se nacist layers.json:', error);
+            showErrorMessage(
+                'Chyba při načítání vrstev',
+                `Nepodařilo se načíst konfiguraci vrstev: ${errorMsg}`
+            );
         }
     }
 
@@ -536,6 +597,14 @@
     document.getElementById('downloadBtn').addEventListener('click', async (event) => {
         const btn = event.currentTarget;
         const selectedConfigs = getSelectedLayerConfigs();
+        const maxMegapixels = getMaxSelectionMegapixels(selectedConfigs, currentSelectionBounds);
+        const exceedsDownloadLimit = Number.isFinite(maxMegapixels) && maxMegapixels > maxDownloadMegapixels;
+
+        if (exceedsDownloadLimit) {
+            event.preventDefault();
+            showErrorMessage('Příliš velký výřez', 'Lze stahovat pouze výřezy do 120 MP.');
+            return;
+        }
 
         if (btn.classList.contains('disabled') || !currentSelectionBounds || !selectedConfigs.length) {
             event.preventDefault();
@@ -564,14 +633,23 @@
                     const blob = await response.blob();
                     triggerBrowserDownload(blob, downloadFilename);
                 } catch (error) {
+                    const errorMsg = (error && error.message) ? error.message : String(error);
                     console.error(`Nepodarilo se stahnout GeoTIFF pro ${downloadFilename}:`, error);
-                    window.open(downloadUrl, '_blank', 'noopener');
+                    showErrorMessage(
+                        'Stahování selhalo',
+                        `Nepodařilo se stáhnout ${downloadFilename}: ${errorMsg}`
+                    );
                 }
 
                 await new Promise((resolve) => setTimeout(resolve, 120));
             }
         } catch (error) {
+            const errorMsg = (error && error.message) ? error.message : String(error);
             console.error('Nepodarilo se dokoncit davkove stahovani GeoTIFF:', error);
+            showErrorMessage(
+                'Chyba při stahování',
+                `Nepodařilo se dokončit stahování: ${errorMsg}`
+            );
         } finally {
             btn.classList.remove('disabled');
             if (btn.innerText.startsWith('Stahuji')) {
@@ -599,15 +677,7 @@
         removalMode: true,
     });
 
-    map.on('pm:create', (e) => {
-        const layer = e.layer;
-
-        if (currentSelectionLayer && currentSelectionLayer !== layer && map.hasLayer(currentSelectionLayer)) {
-            map.removeLayer(currentSelectionLayer);
-        }
-
-        currentSelectionLayer = layer;
-        
+    const updateBoundsFromLayer = (layer) => {
         currentSelectionBounds = layer.getBounds();
         
         const minX = currentSelectionBounds.getWest().toFixed(5);
@@ -618,6 +688,22 @@
         console.log(`Vybrán BBox: ${minX}, ${minY}, ${maxX}, ${maxY}`);
 
         updateDownloadLink();
+    };
+
+    map.on('pm:create', (e) => {
+        const layer = e.layer;
+
+        if (currentSelectionLayer && currentSelectionLayer !== layer && map.hasLayer(currentSelectionLayer)) {
+            map.removeLayer(currentSelectionLayer);
+        }
+
+        currentSelectionLayer = layer;
+        
+        updateBoundsFromLayer(layer);
+
+        layer.on('pm:edit', () => {
+            updateBoundsFromLayer(layer);
+        });
     });
 
     map.on('pm:remove', () => {

@@ -194,6 +194,7 @@
     let currentSelectionLayer = null;
     let layerControl = null;
     const cogLayers = [];
+    const selectedLeafletLayers = new Set();
 
     function populateLayerRescale(layerConfig) {
         const minValue = Number(layerConfig.colors_min);
@@ -244,6 +245,42 @@
         return `${groupName}_${layerName}.tif`;
     }
 
+    function buildDownloadUrl(layerConfig, bounds) {
+        const minX = bounds.getWest().toFixed(5);
+        const minY = bounds.getSouth().toFixed(5);
+        const maxX = bounds.getEast().toFixed(5);
+        const maxY = bounds.getNorth().toFixed(5);
+        const params = new URLSearchParams({
+            url: layerConfig.filename,
+            coord_crs: sourceMapCrs,
+            dst_crs: outputDownloadCrs,
+            bidx: '1',
+            resampling_method: 'nearest',
+            return_mask: 'false',
+            nodata: 'nan'
+        });
+
+        return `${titilerAddress}/cog/bbox/${minX},${minY},${maxX},${maxY}.tif?${params.toString()}`;
+    }
+
+    function getSelectedLayerConfigs() {
+        return Array.from(selectedLeafletLayers)
+            .filter((layer) => layer?.layerConfig)
+            .map((layer) => layer.layerConfig);
+    }
+
+    function triggerBrowserDownload(blob, filename) {
+        const objectUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+
+        link.href = objectUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(objectUrl);
+    }
+
     function updateLayerDisplay(layerConfig, leafletLayer) {
         const layerNameLabel = document.getElementById('activeLayerName');
         const slider = document.getElementById('opacitySlider');
@@ -264,11 +301,10 @@
 
     function updateDownloadLink() {
         const btn = document.getElementById('downloadBtn');
+        const selectedConfigs = getSelectedLayerConfigs();
 
-        if (!currentLayerConfig || !currentSelectionBounds) {
+        if (!currentSelectionBounds || !selectedConfigs.length) {
             btn.href = '#';
-            btn.dataset.downloadUrl = '';
-            btn.dataset.downloadFilename = '';
             btn.classList.add('disabled');
             btn.classList.remove('btn-success');
             btn.classList.add('btn-primary');
@@ -276,29 +312,14 @@
             return;
         }
 
-        const minX = currentSelectionBounds.getWest().toFixed(5);
-        const minY = currentSelectionBounds.getSouth().toFixed(5);
-        const maxX = currentSelectionBounds.getEast().toFixed(5);
-        const maxY = currentSelectionBounds.getNorth().toFixed(5);
-        const params = new URLSearchParams({
-            url: currentLayerConfig.filename,
-            coord_crs: sourceMapCrs,
-            dst_crs: outputDownloadCrs,
-            bidx: '1',
-            resampling_method: 'nearest',
-            return_mask: 'false',
-            nodata: 'nan'
-        });
+        const label = selectedConfigs.length === 1
+            ? `Stáhnout ${buildDownloadFilename(selectedConfigs[0])}`
+            : `Stáhnout GeoTIFF vrstvy (${selectedConfigs.length})`;
 
-        const titilerUrl = `${titilerAddress}/cog/bbox/${minX},${minY},${maxX},${maxY}.tif?${params.toString()}`;
-        const downloadFilename = buildDownloadFilename(currentLayerConfig);
-
-        btn.href = titilerUrl;
-        btn.dataset.downloadUrl = titilerUrl;
-        btn.dataset.downloadFilename = downloadFilename;
+        btn.href = '#';
         btn.classList.remove('disabled', 'btn-primary');
         btn.classList.add('btn-success');
-        btn.innerText = `Stáhnout ${downloadFilename}`;
+        btn.innerText = label;
     }
 
     async function loadCogLayers() {
@@ -333,9 +354,23 @@
                     });
 
                     cogLayer.on('add', () => {
+                        selectedLeafletLayers.add(cogLayer);
                         currentLayerConfig = layerConfig;
                         currentLeafletLayer = cogLayer;
                         updateLayerDisplay(currentLayerConfig, currentLeafletLayer);
+                        updateDownloadLink();
+                    });
+
+                    cogLayer.on('remove', () => {
+                        selectedLeafletLayers.delete(cogLayer);
+
+                        if (currentLeafletLayer === cogLayer) {
+                            const nextLayer = selectedLeafletLayers.values().next().value || null;
+                            currentLeafletLayer = nextLayer;
+                            currentLayerConfig = nextLayer?.layerConfig || null;
+                            updateLayerDisplay(currentLayerConfig, currentLeafletLayer);
+                        }
+
                         updateDownloadLink();
                     });
 
@@ -370,9 +405,23 @@
     }
 
     map.on('overlayadd', (event) => {
+        selectedLeafletLayers.add(event.layer);
         currentLayerConfig = event.layer.layerConfig || null;
         currentLeafletLayer = event.layer;
         updateLayerDisplay(currentLayerConfig, currentLeafletLayer);
+        updateDownloadLink();
+    });
+
+    map.on('overlayremove', (event) => {
+        selectedLeafletLayers.delete(event.layer);
+
+        if (currentLeafletLayer === event.layer) {
+            const nextLayer = selectedLeafletLayers.values().next().value || null;
+            currentLeafletLayer = nextLayer;
+            currentLayerConfig = nextLayer?.layerConfig || null;
+            updateLayerDisplay(currentLayerConfig, currentLeafletLayer);
+        }
+
         updateDownloadLink();
     });
 
@@ -386,10 +435,9 @@
 
     document.getElementById('downloadBtn').addEventListener('click', async (event) => {
         const btn = event.currentTarget;
-        const downloadUrl = btn.dataset.downloadUrl;
-        const downloadFilename = btn.dataset.downloadFilename || 'download.tif';
+        const selectedConfigs = getSelectedLayerConfigs();
 
-        if (btn.classList.contains('disabled') || !downloadUrl) {
+        if (btn.classList.contains('disabled') || !currentSelectionBounds || !selectedConfigs.length) {
             event.preventDefault();
             return;
         }
@@ -400,30 +448,36 @@
 
         try {
             btn.classList.add('disabled');
-            btn.innerText = 'Stahuji...';
+            for (let i = 0; i < selectedConfigs.length; i += 1) {
+                const layerConfig = selectedConfigs[i];
+                const downloadUrl = buildDownloadUrl(layerConfig, currentSelectionBounds);
+                const downloadFilename = buildDownloadFilename(layerConfig);
+                btn.innerText = `Stahuji ${i + 1}/${selectedConfigs.length}...`;
 
-            const response = await fetch(downloadUrl);
+                try {
+                    const response = await fetch(downloadUrl);
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+
+                    const blob = await response.blob();
+                    triggerBrowserDownload(blob, downloadFilename);
+                } catch (error) {
+                    console.error(`Nepodarilo se stahnout GeoTIFF pro ${downloadFilename}:`, error);
+                    window.open(downloadUrl, '_blank', 'noopener');
+                }
+
+                await new Promise((resolve) => setTimeout(resolve, 120));
             }
-
-            const blob = await response.blob();
-            const objectUrl = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-
-            link.href = objectUrl;
-            link.download = downloadFilename;
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            URL.revokeObjectURL(objectUrl);
         } catch (error) {
-            console.error('Nepodarilo se stahnout GeoTIFF:', error);
-            window.open(downloadUrl, '_blank', 'noopener');
+            console.error('Nepodarilo se dokoncit davkove stahovani GeoTIFF:', error);
         } finally {
             btn.classList.remove('disabled');
-            btn.innerText = originalText;
+            if (btn.innerText.startsWith('Stahuji')) {
+                btn.innerText = originalText;
+            }
+            updateDownloadLink();
         }
     });
 

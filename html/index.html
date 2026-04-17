@@ -245,6 +245,104 @@
         return `${groupName}_${layerName}.tif`;
     }
 
+    function latLonToUtm33N(lat, lon) {
+        const a = 6378137.0;
+        const f = 1 / 298.257223563;
+        const e2 = f * (2 - f);
+        const ep2 = e2 / (1 - e2);
+        const k0 = 0.9996;
+        const lon0 = 15 * Math.PI / 180;
+        const latRad = lat * Math.PI / 180;
+        const lonRad = lon * Math.PI / 180;
+
+        const sinLat = Math.sin(latRad);
+        const cosLat = Math.cos(latRad);
+        const tanLat = Math.tan(latRad);
+        const n = a / Math.sqrt(1 - e2 * sinLat * sinLat);
+        const t = tanLat * tanLat;
+        const c = ep2 * cosLat * cosLat;
+        const A = cosLat * (lonRad - lon0);
+
+        const M = a * (
+            (1 - e2 / 4 - 3 * e2 * e2 / 64 - 5 * e2 * e2 * e2 / 256) * latRad
+            - (3 * e2 / 8 + 3 * e2 * e2 / 32 + 45 * e2 * e2 * e2 / 1024) * Math.sin(2 * latRad)
+            + (15 * e2 * e2 / 256 + 45 * e2 * e2 * e2 / 1024) * Math.sin(4 * latRad)
+            - (35 * e2 * e2 * e2 / 3072) * Math.sin(6 * latRad)
+        );
+
+        const easting = k0 * n * (
+            A
+            + (1 - t + c) * Math.pow(A, 3) / 6
+            + (5 - 18 * t + t * t + 72 * c - 58 * ep2) * Math.pow(A, 5) / 120
+        ) + 500000;
+
+        const northing = k0 * (
+            M + n * tanLat * (
+                A * A / 2
+                + (5 - t + 9 * c + 4 * c * c) * Math.pow(A, 4) / 24
+                + (61 - 58 * t + t * t + 600 * c - 330 * ep2) * Math.pow(A, 6) / 720
+            )
+        );
+
+        return { x: easting, y: northing };
+    }
+
+    function calculateBBoxMegapixels(bounds, resolutionMeters) {
+        const resolution = Number(resolutionMeters);
+
+        if (!bounds || !Number.isFinite(resolution) || resolution <= 0) {
+            return null;
+        }
+
+        const corners = [
+            latLonToUtm33N(bounds.getSouth(), bounds.getWest()),
+            latLonToUtm33N(bounds.getSouth(), bounds.getEast()),
+            latLonToUtm33N(bounds.getNorth(), bounds.getWest()),
+            latLonToUtm33N(bounds.getNorth(), bounds.getEast())
+        ];
+        const xs = corners.map((point) => point.x);
+        const ys = corners.map((point) => point.y);
+        const widthMeters = Math.max(...xs) - Math.min(...xs);
+        const heightMeters = Math.max(...ys) - Math.min(...ys);
+
+        if (widthMeters <= 0 || heightMeters <= 0) {
+            return null;
+        }
+
+        return (widthMeters / resolution) * (heightMeters / resolution) / 1_000_000;
+    }
+
+    function formatMegapixelLabel(megapixels) {
+        if (!Number.isFinite(megapixels)) {
+            return null;
+        }
+
+        return megapixels >= 10
+            ? `${megapixels.toFixed(1)} MP`
+            : `${megapixels.toFixed(2)} MP`;
+    }
+
+    function buildMegapixelSummary(selectedConfigs, bounds) {
+        const megapixels = selectedConfigs
+            .map((config) => calculateBBoxMegapixels(bounds, config.res))
+            .filter((value) => Number.isFinite(value));
+
+        if (!megapixels.length) {
+            return null;
+        }
+
+        const minMp = Math.min(...megapixels);
+        const maxMp = Math.max(...megapixels);
+        const minLabel = formatMegapixelLabel(minMp);
+        const maxLabel = formatMegapixelLabel(maxMp);
+
+        if (Math.abs(minMp - maxMp) < 0.01) {
+            return minLabel;
+        }
+
+        return `${minLabel}-${maxLabel}`;
+    }
+
     function buildDownloadUrl(layerConfig, bounds) {
         const minX = bounds.getWest().toFixed(5);
         const minY = bounds.getSouth().toFixed(5);
@@ -312,9 +410,11 @@
             return;
         }
 
+        const megapixelSummary = buildMegapixelSummary(selectedConfigs, currentSelectionBounds);
+        const megapixelSuffix = megapixelSummary ? `, ${megapixelSummary}` : '';
         const label = selectedConfigs.length === 1
-            ? `Stáhnout ${buildDownloadFilename(selectedConfigs[0])}`
-            : `Stáhnout GeoTIFF vrstvy (${selectedConfigs.length})`;
+            ? `Stáhnout ${buildDownloadFilename(selectedConfigs[0])} (${megapixelSummary || '?'})`
+            : `Stáhnout GeoTIFF vrstvy (${selectedConfigs.length}${megapixelSuffix})`;
 
         btn.href = '#';
         btn.classList.remove('disabled', 'btn-primary');

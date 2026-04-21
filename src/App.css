@@ -1,0 +1,176 @@
+@import 'leaflet/dist/leaflet.css';
+@import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
+@import 'leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8f9fa;
+}
+
+.app-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  flex: 0 0 auto;
+  padding: 1rem 1.25rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.page-header-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.page-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.page-intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.page-help-wrap {
+  min-width: 0;
+}
+
+.page-help {
+  margin: 0;
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.page-help + .page-help {
+  margin-top: 0.2rem;
+}
+
+.page-actions {
+  flex: 0 0 250px;
+  max-width: 100%;
+}
+
+.layer-opacity-panel {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.active-layer-name {
+  margin: 0 0 0.25rem;
+  color: #495057;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.download-action {
+  white-space: nowrap;
+}
+
+.map-shell {
+  flex: 1 1 auto;
+  min-height: 300px;
+  padding: 0.75rem;
+  background: #e9ecef;
+  display: flex;
+}
+
+.map {
+  flex: 1 1 auto;
+  min-height: 280px;
+  border-radius: 10px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.leaflet-top.leaflet-right {
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.leaflet-right .leaflet-control {
+  margin-bottom: 10px;
+}
+
+.leaflet-control-layers-expanded {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  height: calc(100% - 50px);
+  max-height: none;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.leaflet-control-layers-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.leaflet-control-layers-overlays {
+  height: auto;
+  max-height: none;
+  overflow: visible;
+  padding-right: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.error-alert {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .page-header-inner {
+    flex-direction: column;
+  }
+
+  .page-actions {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .page-intro {
+    flex-direction: column;
+  }
+
+  .download-action {
+    width: 100%;
+  }
+
+  .map-shell {
+    padding: 0.5rem;
+  }
+
+  .leaflet-control-layers-expanded {
+    width: 150px;
+  }
+}

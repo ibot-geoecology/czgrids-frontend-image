@@ -1,0 +1,34 @@
+{
+  "app": {
+    "title": "Stahování dat",
+    "step1": "1. Nakreslete obdelník do mapy pomocí nástroje se symbolem čtverce.",
+    "step2": "2. Stáhněte tlačítkem:",
+    "language": "Jazyk",
+    "close": "Zavřít"
+  },
+  "layer": {
+    "opacity": "Průhlednost vrstvy: {{value}} %"
+  },
+  "download": {
+    "default": "Stáhnout GeoTIFF",
+    "single": "Stáhnout {{filename}} ({{summary}})",
+    "multi": "Stáhnout GeoTIFF vrstvy ({{count}}{{summarySuffix}})",
+    "multiSuffix": ", {{summary}}",
+    "maxSuffix": " - max 120 MP",
+    "progress": "Stahuji {{current}}/{{total}}..."
+  },
+  "errors": {
+    "tooLargeTitle": "Příliš velký výřez",
+    "tooLargeMessage": "Lze stahovat pouze výřezy do 120 MP.",
+    "downloadFailedTitle": "Stahování selhalo",
+    "downloadFailedMessage": "Nepodařilo se stáhnout {{filename}}: {{error}}",
+    "downloadBatchTitle": "Chyba při stahování",
+    "downloadBatchMessage": "Nepodařilo se dokončit stahování: {{error}}",
+    "loadLayersTitle": "Chyba při načítání vrstev",
+    "loadLayersMessage": "Nepodařilo se načíst konfiguraci vrstev: {{error}}",
+    "noLayersDefined": "V layers.json nejsou definovány žádné vrstvy."
+  },
+  "common": {
+    "none": "-"
+  }
+}

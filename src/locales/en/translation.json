@@ -1,0 +1,34 @@
+{
+  "app": {
+    "title": "Data Download",
+    "step1": "1. Draw a rectangle in the map using the square tool.",
+    "step2": "2. Download with the button:",
+    "language": "Language",
+    "close": "Close"
+  },
+  "layer": {
+    "opacity": "Layer opacity: {{value}} %"
+  },
+  "download": {
+    "default": "Download GeoTIFF",
+    "single": "Download {{filename}} ({{summary}})",
+    "multi": "Download GeoTIFF layers ({{count}}{{summarySuffix}})",
+    "multiSuffix": ", {{summary}}",
+    "maxSuffix": " - max 120 MP",
+    "progress": "Downloading {{current}}/{{total}}..."
+  },
+  "errors": {
+    "tooLargeTitle": "Selection too large",
+    "tooLargeMessage": "Only selections up to 120 MP can be downloaded.",
+    "downloadFailedTitle": "Download failed",
+    "downloadFailedMessage": "Failed to download {{filename}}: {{error}}",
+    "downloadBatchTitle": "Download error",
+    "downloadBatchMessage": "Failed to finish download: {{error}}",
+    "loadLayersTitle": "Layer loading error",
+    "loadLayersMessage": "Failed to load layer configuration: {{error}}",
+    "noLayersDefined": "No layers are defined in layers.json."
+  },
+  "common": {
+    "none": "-"
+  }
+}

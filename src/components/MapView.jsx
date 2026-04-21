@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import L from 'leaflet';
 import proj4 from 'proj4';
+import { useTranslation } from 'react-i18next';
 import '@geoman-io/leaflet-geoman-free';
 import 'leaflet-groupedlayercontrol';
 
@@ -138,6 +139,7 @@ function triggerBrowserDownload(blob, filename) {
 }
 
 const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
+  const { t, i18n } = useTranslation();
   const mapRef = useRef(null);
   const leafletMapRef = useRef(null);
   const layerControlRef = useRef(null);
@@ -147,9 +149,9 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
   const selectedLeafletLayersRef = useRef(new Set());
 
   const [error, setError] = useState(null);
-  const [activeLayerName, setActiveLayerName] = useState('-');
+  const [activeLayerName, setActiveLayerName] = useState(t('common.none'));
   const [opacity, setOpacity] = useState(0.8);
-  const [downloadLabel, setDownloadLabel] = useState('Stáhnout GeoTIFF');
+  const [downloadLabel, setDownloadLabel] = useState(t('download.default'));
   const [downloadDisabled, setDownloadDisabled] = useState(true);
   const [downloadVariant, setDownloadVariant] = useState('btn-primary');
 
@@ -171,12 +173,12 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
 
   const updateLayerDisplay = (layerConfig, leafletLayer) => {
     if (!layerConfig || !leafletLayer) {
-      setActiveLayerName('-');
+      setActiveLayerName(t('common.none'));
       setOpacity(0.8);
       return;
     }
 
-    setActiveLayerName(`${layerConfig.groupName || '-'} ${layerConfig.name || '-'}`);
+    setActiveLayerName(`${layerConfig.groupName || t('common.none')} ${layerConfig.name || t('common.none')}`);
     setOpacity(leafletLayer.options.opacity ?? 0.8);
   };
 
@@ -187,7 +189,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
     if (!currentSelectionBounds || !selectedConfigs.length) {
       setDownloadDisabled(true);
       setDownloadVariant('btn-primary');
-      setDownloadLabel('Stáhnout GeoTIFF');
+      setDownloadLabel(t('download.default'));
       return;
     }
 
@@ -199,16 +201,16 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
           ? `${formatMegapixelLabel(stats.min)}-${formatMegapixelLabel(stats.max)}`
           : null;
     const exceedsDownloadLimit = stats && Number.isFinite(stats.max) && stats.max > MAX_DOWNLOAD_MEGAPIXELS;
-    const summarySuffix = summary ? `, ${summary}` : '';
+    const summarySuffix = summary ? t('download.multiSuffix', { summary }) : '';
     const label =
       selectedConfigs.length === 1
-        ? `Stáhnout ${buildDownloadFilename(selectedConfigs[0])} (${summary || '?'})`
-        : `Stáhnout GeoTIFF vrstvy (${selectedConfigs.length}${summarySuffix})`;
+        ? t('download.single', { filename: buildDownloadFilename(selectedConfigs[0]), summary: summary || '?' })
+        : t('download.multi', { count: selectedConfigs.length, summarySuffix });
 
     if (exceedsDownloadLimit) {
       setDownloadDisabled(true);
       setDownloadVariant('btn-danger');
-      setDownloadLabel(`${label} - max 120 MP`);
+      setDownloadLabel(`${label}${t('download.maxSuffix')}`);
       return;
     }
 
@@ -260,7 +262,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
     const exceedsDownloadLimit = stats && Number.isFinite(stats.max) && stats.max > MAX_DOWNLOAD_MEGAPIXELS;
 
     if (exceedsDownloadLimit) {
-      showErrorMessage('Prilis velky vyrez', 'Lze stahovat pouze vyrezy do 120 MP.');
+      showErrorMessage(t('errors.tooLargeTitle'), t('errors.tooLargeMessage'));
       return;
     }
 
@@ -274,7 +276,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
         const downloadUrl = buildDownloadUrl(layerConfig, currentSelectionBounds);
         const downloadFilename = buildDownloadFilename(layerConfig);
 
-        setDownloadLabel(`Stahuji ${i + 1}/${selectedConfigs.length}...`);
+        setDownloadLabel(t('download.progress', { current: i + 1, total: selectedConfigs.length }));
 
         try {
           const response = await fetch(downloadUrl);
@@ -288,7 +290,10 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
         } catch (downloadError) {
           const errorMsg = downloadError && downloadError.message ? downloadError.message : String(downloadError);
           console.error(`Nepodařilo se stáhnout GeoTIFF pro ${downloadFilename}:`, downloadError);
-          showErrorMessage('Stahování selhalo', `Nepodařilo se stáhnout ${downloadFilename}: ${errorMsg}`);
+          showErrorMessage(
+            t('errors.downloadFailedTitle'),
+            t('errors.downloadFailedMessage', { filename: downloadFilename, error: errorMsg })
+          );
         }
 
         await new Promise((resolve) => window.setTimeout(resolve, 120));
@@ -296,7 +301,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
     } catch (errorValue) {
       const errorMsg = errorValue && errorValue.message ? errorValue.message : String(errorValue);
       console.error('Nepodařilo se dokončit dávkové stahování GeoTIFF:', errorValue);
-      showErrorMessage('Chyba při stahování', `Nepodařilo se dokončit stahování: ${errorMsg}`);
+      showErrorMessage(t('errors.downloadBatchTitle'), t('errors.downloadBatchMessage', { error: errorMsg }));
     } finally {
       setDownloadLabel(originalLabel);
       updateDownloadState();
@@ -329,6 +334,16 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
       downloadVariant
     });
   }, [onUiStateChange, error, activeLayerName, opacity, downloadLabel, downloadDisabled, downloadVariant]);
+
+  useEffect(() => {
+    if (!currentLeafletLayerRef.current) {
+      setActiveLayerName(t('common.none'));
+    }
+
+    updateDownloadState();
+    // React to language changes only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language]);
 
   useEffect(() => {
     if (!mapRef.current || leafletMapRef.current) {
@@ -474,7 +489,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
         });
 
         if (!overlayLayers.length) {
-          throw new Error('V layers.json nejsou definovane zadne vrstvy.');
+          throw new Error(t('errors.noLayersDefined'));
         }
 
         if (!isMounted || !leafletMapRef.current || !map._controlCorners) {
@@ -504,7 +519,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
 
         const errorMsg = loadError && loadError.message ? loadError.message : String(loadError);
         console.error('Nepodařilo se načíst layers.json:', loadError);
-        showErrorMessage('Chyba při načítání vrstev', `Nepodařilo se načíst konfiguraci vrstev: ${errorMsg}`);
+        showErrorMessage(t('errors.loadLayersTitle'), t('errors.loadLayersMessage', { error: errorMsg }));
       }
     };
 

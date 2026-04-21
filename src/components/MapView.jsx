@@ -140,6 +140,7 @@ function triggerBrowserDownload(blob, filename) {
 
 const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
   const { t, i18n } = useTranslation();
+  const tRef = useRef(t);
   const mapRef = useRef(null);
   const leafletMapRef = useRef(null);
   const layerControlRef = useRef(null);
@@ -154,6 +155,12 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
   const [downloadLabel, setDownloadLabel] = useState(t('download.default'));
   const [downloadDisabled, setDownloadDisabled] = useState(true);
   const [downloadVariant, setDownloadVariant] = useState('btn-primary');
+
+  useEffect(() => {
+    tRef.current = t;
+  }, [t]);
+
+  const tr = (key, options) => tRef.current(key, options);
 
   const showErrorMessage = (title, message, autoDismissMs = 0) => {
     setError({ title, message });
@@ -173,12 +180,12 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
 
   const updateLayerDisplay = (layerConfig, leafletLayer) => {
     if (!layerConfig || !leafletLayer) {
-      setActiveLayerName(t('common.none'));
+      setActiveLayerName(tr('common.none'));
       setOpacity(0.8);
       return;
     }
 
-    setActiveLayerName(`${layerConfig.groupName || t('common.none')} ${layerConfig.name || t('common.none')}`);
+    setActiveLayerName(`${layerConfig.groupName || tr('common.none')} ${layerConfig.name || tr('common.none')}`);
     setOpacity(leafletLayer.options.opacity ?? 0.8);
   };
 
@@ -189,7 +196,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
     if (!currentSelectionBounds || !selectedConfigs.length) {
       setDownloadDisabled(true);
       setDownloadVariant('btn-primary');
-      setDownloadLabel(t('download.default'));
+      setDownloadLabel(tr('download.default'));
       return;
     }
 
@@ -201,16 +208,16 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
           ? `${formatMegapixelLabel(stats.min)}-${formatMegapixelLabel(stats.max)}`
           : null;
     const exceedsDownloadLimit = stats && Number.isFinite(stats.max) && stats.max > MAX_DOWNLOAD_MEGAPIXELS;
-    const summarySuffix = summary ? t('download.multiSuffix', { summary }) : '';
+    const summarySuffix = summary ? tr('download.multiSuffix', { summary }) : '';
     const label =
       selectedConfigs.length === 1
-        ? t('download.single', { filename: buildDownloadFilename(selectedConfigs[0]), summary: summary || '?' })
-        : t('download.multi', { count: selectedConfigs.length, summarySuffix });
+        ? tr('download.single', { filename: buildDownloadFilename(selectedConfigs[0]), summary: summary || '?' })
+        : tr('download.multi', { count: selectedConfigs.length, summarySuffix });
 
     if (exceedsDownloadLimit) {
       setDownloadDisabled(true);
       setDownloadVariant('btn-danger');
-      setDownloadLabel(`${label}${t('download.maxSuffix')}`);
+      setDownloadLabel(`${label}${tr('download.maxSuffix')}`);
       return;
     }
 
@@ -262,7 +269,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
     const exceedsDownloadLimit = stats && Number.isFinite(stats.max) && stats.max > MAX_DOWNLOAD_MEGAPIXELS;
 
     if (exceedsDownloadLimit) {
-      showErrorMessage(t('errors.tooLargeTitle'), t('errors.tooLargeMessage'));
+      showErrorMessage(tr('errors.tooLargeTitle'), tr('errors.tooLargeMessage'));
       return;
     }
 
@@ -276,7 +283,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
         const downloadUrl = buildDownloadUrl(layerConfig, currentSelectionBounds);
         const downloadFilename = buildDownloadFilename(layerConfig);
 
-        setDownloadLabel(t('download.progress', { current: i + 1, total: selectedConfigs.length }));
+        setDownloadLabel(tr('download.progress', { current: i + 1, total: selectedConfigs.length }));
 
         try {
           const response = await fetch(downloadUrl);
@@ -291,8 +298,8 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
           const errorMsg = downloadError && downloadError.message ? downloadError.message : String(downloadError);
           console.error(`Nepodařilo se stáhnout GeoTIFF pro ${downloadFilename}:`, downloadError);
           showErrorMessage(
-            t('errors.downloadFailedTitle'),
-            t('errors.downloadFailedMessage', { filename: downloadFilename, error: errorMsg })
+            tr('errors.downloadFailedTitle'),
+            tr('errors.downloadFailedMessage', { filename: downloadFilename, error: errorMsg })
           );
         }
 
@@ -301,7 +308,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
     } catch (errorValue) {
       const errorMsg = errorValue && errorValue.message ? errorValue.message : String(errorValue);
       console.error('Nepodařilo se dokončit dávkové stahování GeoTIFF:', errorValue);
-      showErrorMessage(t('errors.downloadBatchTitle'), t('errors.downloadBatchMessage', { error: errorMsg }));
+      showErrorMessage(tr('errors.downloadBatchTitle'), tr('errors.downloadBatchMessage', { error: errorMsg }));
     } finally {
       setDownloadLabel(originalLabel);
       updateDownloadState();
@@ -337,7 +344,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
 
   useEffect(() => {
     if (!currentLeafletLayerRef.current) {
-      setActiveLayerName(t('common.none'));
+      setActiveLayerName(tr('common.none'));
     }
 
     updateDownloadState();
@@ -489,7 +496,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
         });
 
         if (!overlayLayers.length) {
-          throw new Error(t('errors.noLayersDefined'));
+          throw new Error(tr('errors.noLayersDefined'));
         }
 
         if (!isMounted || !leafletMapRef.current || !map._controlCorners) {
@@ -519,7 +526,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
 
         const errorMsg = loadError && loadError.message ? loadError.message : String(loadError);
         console.error('Nepodařilo se načíst layers.json:', loadError);
-        showErrorMessage(t('errors.loadLayersTitle'), t('errors.loadLayersMessage', { error: errorMsg }));
+        showErrorMessage(tr('errors.loadLayersTitle'), tr('errors.loadLayersMessage', { error: errorMsg }));
       }
     };
 

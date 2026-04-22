@@ -89,6 +89,17 @@ body {
   color: #6c757d;
 }
 
+.help-link {
+  font-size: 0.9rem;
+  color: #3232ff;
+  text-decoration: none;
+  margin-top: 0.35rem;
+}
+
+.help-link:hover {
+  text-decoration: underline;
+}
+
 .page-actions {
   flex: 0 0 250px;
   max-width: 100%;

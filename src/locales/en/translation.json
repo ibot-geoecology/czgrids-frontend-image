@@ -4,7 +4,8 @@
     "step1": "1. Draw a rectangle in the map using the square tool.",
     "step2": "2. Download with the button:",
     "language": "Language",
-    "close": "Close"
+    "close": "Close",
+    "helpLink": "Help"
   },
   "layer": {
     "opacity": "Layer opacity: {{value}} %"

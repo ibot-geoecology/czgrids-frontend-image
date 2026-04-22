@@ -4,7 +4,8 @@
     "step1": "1. Nakreslete obdelník do mapy pomocí nástroje se symbolem čtverce.",
     "step2": "2. Stáhněte tlačítkem:",
     "language": "Jazyk",
-    "close": "Zavřít"
+    "close": "Zavřít",
+    "helpLink": "Nápověda"
   },
   "layer": {
     "opacity": "Průhlednost vrstvy: {{value}} %"

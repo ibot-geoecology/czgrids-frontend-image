@@ -31,5 +31,13 @@
   },
   "common": {
     "none": "-"
+  },
+  "help": {
+    "title": "Help",
+    "titilerSection": "TiTiler – raster data source",
+    "titilerDescription": "This application uses TiTiler to dynamically serve raster data in Cloud Optimized GeoTIFF (COG) format. TiTiler is an open-source service for working with raster data over an HTTP API.",
+    "titilerLinkLabel": "TiTiler documentation",
+    "rSection": "Downloading a raster in R",
+    "rDescription": "The script below shows how to retrieve the list of available layers and download a raster crop for a given bounding box."
   }
 }

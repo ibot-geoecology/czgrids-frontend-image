@@ -14,13 +14,14 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f8f9fa;
+  background: #1a2636;
 }
 
 .app-shell {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #1a2636;
 }
 
 .page-header {
@@ -218,4 +219,47 @@ body {
   .leaflet-control-layers-expanded {
     width: 150px;
   }
+}
+
+/* Help page */
+.help-content {
+  max-width: 860px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 3rem;
+  color: #e2e8f0;
+}
+
+.help-section {
+  margin-bottom: 2.5rem;
+}
+
+.help-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #f8fafc;
+}
+
+.help-section p {
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+.help-section a {
+  color: #7dd3fc;
+}
+
+.help-section a:hover {
+  color: #bae6fd;
+}
+
+.help-code {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #e2e8f0;
 }

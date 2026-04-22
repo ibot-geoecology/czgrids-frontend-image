@@ -31,5 +31,13 @@
   },
   "common": {
     "none": "-"
+  },
+  "help": {
+    "title": "Nápověda",
+    "titilerSection": "TiTiler – zdroj rastrových dat",
+    "titilerDescription": "Tato aplikace využívá nástroj TiTiler pro dynamické poskytování rastrových dat ve formátu Cloud Optimized GeoTIFF (COG). TiTiler je open-source služba pro práci s rastrovými daty dostupná přes HTTP API.",
+    "titilerLinkLabel": "Dokumentace TiTiler",
+    "rSection": "Stažení rastru v jazyce R",
+    "rDescription": "Níže je ukázkový skript v jazyce R, který ukazuje, jak načíst seznam dostupných vrstev a stáhnout výřez rastrových dat pro zadanou bounding box."
   }
 }

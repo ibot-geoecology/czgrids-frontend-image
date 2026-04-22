@@ -65,7 +65,7 @@ export default function MainPage() {
             <div className="page-actions">
               <div className="layer-opacity-panel">
                 <p className="active-layer-name">{uiState.activeLayerName}</p>
-                <label htmlFor="opacitySlider" className="form-label mb-1" style={{ fontSize: '0.85rem', color: '#6c757d' }}>
+                <label htmlFor="opacitySlider" className="form-label mb-1" style={{ fontSize: '0.85rem', color: '#cfd8e3' }}>
                   {t('layer.opacity', { value: Math.round(uiState.opacity * 100) })}
                 </label>
                 <input
@@ -85,14 +85,14 @@ export default function MainPage() {
               <div className="language-buttons">
                 <button
                   type="button"
-                  className={`btn btn-sm ${i18n.language.startsWith('cs') ? 'btn-dark' : 'btn-outline-dark'}`}
+                  className={`btn btn-sm ${i18n.language.startsWith('cs') ? 'btn-light' : 'btn-outline-light'}`}
                   onClick={() => changeLanguage('cs')}
                 >
                   CS
                 </button>
                 <button
                   type="button"
-                  className={`btn btn-sm ${i18n.language.startsWith('en') ? 'btn-dark' : 'btn-outline-dark'}`}
+                  className={`btn btn-sm ${i18n.language.startsWith('en') ? 'btn-light' : 'btn-outline-light'}`}
                   onClick={() => changeLanguage('en')}
                 >
                   EN

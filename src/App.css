@@ -26,8 +26,8 @@ body {
 .page-header {
   flex: 0 0 auto;
   padding: 1rem 1.25rem;
-  background: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
+  background: #2c3e50;
+  border-bottom: 1px solid #1f2d3a;
 }
 
 .page-header-inner {
@@ -47,6 +47,7 @@ body {
 .page-title {
   margin: 0 0 0.5rem;
   font-size: 1.2rem;
+  color: #f8f9fa;
 }
 
 .page-intro {
@@ -62,7 +63,7 @@ body {
 
 .page-help {
   margin: 0;
-  color: #6c757d;
+  color: #cfd8e3;
   font-size: 0.95rem;
 }
 
@@ -86,18 +87,19 @@ body {
 
 .language-label {
   font-size: 0.85rem;
-  color: #6c757d;
+  color: #cfd8e3;
 }
 
 .help-link {
-  font-size: 0.9rem;
-  color: #3232ff;
+  font-size: 0.85rem;
+  color: #d9e6f2;
   text-decoration: none;
   margin-top: 0.35rem;
 }
 
 .help-link:hover {
-  text-decoration: underline;
+  color: #ffffff;
+  text-decoration: none;
 }
 
 .page-actions {
@@ -112,7 +114,7 @@ body {
 
 .active-layer-name {
   margin: 0 0 0.25rem;
-  color: #495057;
+  color: #d9e6f2;
   font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;

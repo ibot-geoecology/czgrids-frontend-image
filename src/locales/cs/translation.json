@@ -10,6 +10,14 @@
   "layer": {
     "opacity": "Průhlednost vrstvy: {{value}} %"
   },
+  "identify": {
+    "on": "Hodnoty: zapnuto",
+    "off": "Hodnoty: vypnuto",
+    "loading": "Načítám hodnotu...",
+    "noData": "bez dat",
+    "value": "Hodnota: {{value}}",
+    "error": "Nepodařilo se načíst hodnotu: {{error}}"
+  },
   "download": {
     "default": "Stáhnout GeoTIFF",
     "single": "Stáhnout {{filename}} ({{summary}})",
@@ -25,6 +33,8 @@
     "downloadFailedMessage": "Nepodařilo se stáhnout {{filename}}: {{error}}",
     "downloadBatchTitle": "Chyba při stahování",
     "downloadBatchMessage": "Nepodařilo se dokončit stahování: {{error}}",
+    "identifyNoLayerTitle": "Není vybraná vrstva",
+    "identifyNoLayerMessage": "Nejdříve zapněte alespoň jednu rastrovou vrstvu v seznamu vrstev.",
     "loadLayersTitle": "Chyba při načítání vrstev",
     "loadLayersMessage": "Nepodařilo se načíst konfiguraci vrstev: {{error}}",
     "noLayersDefined": "V layers.json nejsou definovány žádné vrstvy."

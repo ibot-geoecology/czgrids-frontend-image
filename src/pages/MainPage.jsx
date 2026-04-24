@@ -5,6 +5,7 @@ import MapView from '../components/MapView';
 export default function MainPage() {
   const { t, i18n } = useTranslation();
   const mapViewRef = useRef(null);
+  const [identifyEnabled, setIdentifyEnabled] = useState(false);
   const [uiState, setUiState] = useState(() => ({
     error: null,
     activeLayerName: t('common.none'),
@@ -38,6 +39,15 @@ export default function MainPage() {
     }
   };
 
+  const handleToggleIdentify = () => {
+    const nextValue = !identifyEnabled;
+    setIdentifyEnabled(nextValue);
+
+    if (mapViewRef.current) {
+      mapViewRef.current.setIdentifyEnabled(nextValue);
+    }
+  };
+
   return (
     <div className="app-shell">
       <header className="page-header">
@@ -65,6 +75,13 @@ export default function MainPage() {
             <div className="page-actions">
               <div className="layer-opacity-panel">
                 <p className="active-layer-name">{uiState.activeLayerName}</p>
+                <button
+                  type="button"
+                  className={`btn btn-sm d-block ${identifyEnabled ? 'btn-info' : 'btn-outline-light'} mb-2`}
+                  onClick={handleToggleIdentify}
+                >
+                  {identifyEnabled ? t('identify.on') : t('identify.off')}
+                </button>
                 <label htmlFor="opacitySlider" className="form-label mb-1" style={{ fontSize: '0.85rem', color: '#cfd8e3' }}>
                   {t('layer.opacity', { value: Math.round(uiState.opacity * 100) })}
                 </label>

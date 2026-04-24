@@ -100,6 +100,15 @@ function buildTitilerTilesUrl(layerConfig) {
   return `${TITILER_ADDRESS}/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?${params.toString()}`;
 }
 
+function buildPointQueryUrl(layerConfig, lat, lon) {
+  const params = new URLSearchParams({
+    url: layerConfig.filename,
+    bidx: '1'
+  });
+
+  return `${TITILER_ADDRESS}/cog/point/${lon},${lat}?${params.toString()}`;
+}
+
 function populateLayerRescale(layerConfig) {
   const minValue = Number(layerConfig.colors_min);
   const maxValue = Number(layerConfig.colors_max);
@@ -148,6 +157,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
   const currentSelectionBoundsRef = useRef(null);
   const currentSelectionLayerRef = useRef(null);
   const selectedLeafletLayersRef = useRef(new Set());
+  const identifyEnabledRef = useRef(false);
 
   const [error, setError] = useState(null);
   const [activeLayerName, setActiveLayerName] = useState(t('common.none'));
@@ -324,6 +334,15 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
     },
     clearError: () => {
       setError(null);
+    },
+    setIdentifyEnabled: (enabled) => {
+      const nextValue = Boolean(enabled);
+      identifyEnabledRef.current = nextValue;
+
+      const map = leafletMapRef.current;
+      if (map) {
+        map.getContainer().style.cursor = nextValue ? 'crosshair' : '';
+      }
     }
   }));
 
@@ -444,10 +463,58 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
       updateDownloadState();
     };
 
+    const onMapClick = async (event) => {
+      if (!identifyEnabledRef.current) {
+        return;
+      }
+
+      const currentLayer = currentLeafletLayerRef.current;
+
+      if (!currentLayer?.layerConfig) {
+        showErrorMessage(tr('errors.identifyNoLayerTitle'), tr('errors.identifyNoLayerMessage'), 2500);
+        return;
+      }
+
+      const lat = Number(event.latlng?.lat);
+      const lon = Number(event.latlng?.lng);
+
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+        return;
+      }
+
+      const popup = L.popup()
+        .setLatLng(event.latlng)
+        .setContent(tr('identify.loading'))
+        .openOn(map);
+
+      try {
+        const response = await fetch(buildPointQueryUrl(currentLayer.layerConfig, lat, lon));
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        const rawValue = Array.isArray(data?.values) ? data.values[0] : null;
+        const isFiniteNumber = Number.isFinite(rawValue);
+        const formattedValue = isFiniteNumber ? Number(rawValue).toFixed(6) : tr('identify.noData');
+        const popupTitle = `${currentLayer.layerConfig.groupName || tr('common.none')} ${currentLayer.layerConfig.name || tr('common.none')}`;
+
+        popup.setContent(
+          `<strong>${popupTitle}</strong><br/>${tr('identify.value', { value: formattedValue })}`
+        );
+      } catch (identifyError) {
+        const errorMsg = identifyError && identifyError.message ? identifyError.message : String(identifyError);
+        console.error('Nepodařilo se zjistit hodnotu v bodě:', identifyError);
+        popup.setContent(tr('identify.error', { error: errorMsg }));
+      }
+    };
+
     map.on('overlayadd', onOverlayAdd);
     map.on('overlayremove', onOverlayRemove);
     map.on('pm:create', onCreate);
     map.on('pm:remove', onRemove);
+    map.on('click', onMapClick);
 
     const loadCogLayers = async () => {
       try {
@@ -542,6 +609,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
       map.off('overlayremove', onOverlayRemove);
       map.off('pm:create', onCreate);
       map.off('pm:remove', onRemove);
+      map.off('click', onMapClick);
       map.remove();
       leafletMapRef.current = null;
     };

@@ -1,14 +1,22 @@
 {
   "app": {
     "title": "Data Download",
-    "step1": "1. Draw a rectangle in the map using the square tool.",
-    "step2": "2. Download with the button:",
+    "step1": "1. Draw a rectangle on the map using the square tool.",
+    "step2": "2. Download using the button:",
     "language": "Language",
     "close": "Close",
     "helpLink": "Help"
   },
   "layer": {
     "opacity": "Layer opacity: {{value}} %"
+  },
+  "identify": {
+    "on": "Values: on",
+    "off": "Values: off",
+    "loading": "Loading value...",
+    "noData": "no value",
+    "value": "Value: {{value}}",
+    "error": "Failed to load value: {{error}}"
   },
   "download": {
     "default": "Download GeoTIFF",
@@ -25,6 +33,8 @@
     "downloadFailedMessage": "Failed to download {{filename}}: {{error}}",
     "downloadBatchTitle": "Download error",
     "downloadBatchMessage": "Failed to finish download: {{error}}",
+    "identifyNoLayerTitle": "No layer selected",
+    "identifyNoLayerMessage": "Please enable at least one raster layer in the layer list first.",
     "loadLayersTitle": "Layer loading error",
     "loadLayersMessage": "Failed to load layer configuration: {{error}}",
     "noLayersDefined": "No layers are defined in layers.json."

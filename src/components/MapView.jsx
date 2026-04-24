@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import '@geoman-io/leaflet-geoman-free';
 import 'leaflet-groupedlayercontrol';
 
-const TITILER_ADDRESS = 'https://czgrids.dyn.cloud.e-infra.cz';
+const TITILER_ADDRESS = import.meta.env.TITILER_ADDRESS || 'https://czgrids.dyn.cloud.e-infra.cz';
 const SOURCE_MAP_CRS = 'EPSG:4326';
 const OUTPUT_DOWNLOAD_CRS = 'EPSG:32633';
 const MAX_DOWNLOAD_MEGAPIXELS = 120;

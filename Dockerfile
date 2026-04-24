@@ -2,6 +2,9 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
+ARG TITILER_ADDRESS=https://czgrids.dyn.cloud.e-infra.cz
+ENV TITILER_ADDRESS=$TITILER_ADDRESS
+
 COPY package.json ./
 COPY package-lock.json ./
 RUN npm ci

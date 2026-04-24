@@ -15,7 +15,7 @@ df <- groups[["tmean offset"]]
 filename <- df$filename[df$name == "annual"]
 
 # Bounding box for Pruhonice park (in EPSG:4326)
-bbox <- c(14.53062, 49.97673, 14.57542, 50.00355)
+bbox <- sf::st_bbox(c(xmin = 14.53062, ymin = 49.97673, xmax = 14.57542, ymax = 50.00355), crs = sf::st_crs(4326))
 
 # Build the query parameters for the CZGrids API
 query <- c(
@@ -35,7 +35,7 @@ query_part <- paste(
 )
 
 # Download the raster data for the specified bounding box and query parameters
-url <- stringr::str_glue("https://czgrids.dyn.cloud.e-infra.cz/cog/bbox/{bbox[1]},{bbox[2]},{bbox[3]},{bbox[4]}.tif?{query_part}")
+url <- stringr::str_glue("https://czgrids.dyn.cloud.e-infra.cz/cog/bbox/{bbox$xmin},{bbox$ymin},{bbox$xmax},{bbox$ymax}.tif?{query_part}")
 out_file <- tempfile(fileext = ".tif")
 download.file(url, out_file, mode = "wb", quiet = TRUE)
 

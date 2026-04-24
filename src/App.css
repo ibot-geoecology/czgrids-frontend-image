@@ -133,6 +133,7 @@ body {
   padding: 0.75rem;
   background: #e9ecef;
   display: flex;
+  position: relative;
 }
 
 .map {
@@ -140,6 +141,45 @@ body {
   min-height: 280px;
   border-radius: 10px;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.map-legend {
+  position: absolute;
+  left: 1.4rem;
+  bottom: 1.4rem;
+  z-index: 900;
+  width: min(280px, calc(100% - 2.8rem));
+  background: rgba(18, 26, 37, 0.9);
+  color: #f7fafc;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.map-legend-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 0.45rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-legend-scale {
+  height: 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.map-legend-range {
+  margin-top: 0.35rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .leaflet-top.leaflet-right {
@@ -214,6 +254,13 @@ body {
 
   .map-shell {
     padding: 0.5rem;
+  }
+
+  .map-legend {
+    left: 0.95rem;
+    right: 0.95rem;
+    bottom: 0.95rem;
+    width: auto;
   }
 
   .leaflet-control-layers-expanded {

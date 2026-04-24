@@ -12,6 +12,35 @@ const MAX_DOWNLOAD_MEGAPIXELS = 120;
 const PROJ_WGS84 = 'WGS84';
 const PROJ_UTM33N = '+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs +type=crs';
 
+function getColormapGradient(colormapName) {
+  const key = String(colormapName || '').toLowerCase();
+
+  const gradients = {
+    magma: 'linear-gradient(to right, #000004, #3b0f70, #8c2981, #de4968, #fe9f6d, #fcfdbf)',
+    inferno: 'linear-gradient(to right, #000004, #320a5f, #781c6d, #bb3754, #ed6925, #fcffa4)',
+    plasma: 'linear-gradient(to right, #0d0887, #5b02a3, #9a179b, #cb4679, #ed7953, #f0f921)',
+    viridis: 'linear-gradient(to right, #440154, #3b528b, #21918c, #5ec962, #fde725)',
+    cividis: 'linear-gradient(to right, #00204c, #424b6b, #7a7b78, #bcae6c, #fee838)',
+    turbo: 'linear-gradient(to right, #30123b, #4145ab, #4685f4, #39b8ac, #7ad151, #fde725, #f46d43, #a50026)',
+    gray: 'linear-gradient(to right, #000000, #ffffff)',
+    grey: 'linear-gradient(to right, #000000, #ffffff)'
+  };
+
+  return gradients[key] || gradients.gray;
+}
+
+function formatLegendValue(value) {
+  const numericValue = Number(value);
+
+  if (!Number.isFinite(numericValue)) {
+    return '?';
+  }
+
+  return Math.abs(numericValue) >= 1000 || Number.isInteger(numericValue)
+    ? numericValue.toLocaleString('cs-CZ')
+    : numericValue.toLocaleString('cs-CZ', { maximumFractionDigits: 3 });
+}
+
 function sanitizeFilenamePart(value) {
   return String(value)
     .trim()
@@ -165,6 +194,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
   const [downloadLabel, setDownloadLabel] = useState(t('download.default'));
   const [downloadDisabled, setDownloadDisabled] = useState(true);
   const [downloadVariant, setDownloadVariant] = useState('btn-primary');
+  const [legendLayerConfig, setLegendLayerConfig] = useState(null);
 
   useEffect(() => {
     tRef.current = t;
@@ -192,11 +222,13 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
     if (!layerConfig || !leafletLayer) {
       setActiveLayerName(tr('common.none'));
       setOpacity(0.8);
+      setLegendLayerConfig(null);
       return;
     }
 
     setActiveLayerName(`${layerConfig.groupName || tr('common.none')} ${layerConfig.name || tr('common.none')}`);
     setOpacity(leafletLayer.options.opacity ?? 0.8);
+    setLegendLayerConfig(layerConfig);
   };
 
   const updateDownloadState = () => {
@@ -362,14 +394,19 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
   }, [onUiStateChange, error, activeLayerName, opacity, downloadLabel, downloadDisabled, downloadVariant]);
 
   useEffect(() => {
-    if (!currentLeafletLayerRef.current) {
-      setActiveLayerName(tr('common.none'));
-    }
+    updateLayerDisplay(currentLeafletLayerRef.current?.layerConfig || null, currentLeafletLayerRef.current);
 
     updateDownloadState();
     // React to language changes only.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language]);
+
+  const legendGradient = getColormapGradient(legendLayerConfig?.colormap);
+  const legendMin = formatLegendValue(legendLayerConfig?.colors_min);
+  const legendMax = formatLegendValue(legendLayerConfig?.colors_max);
+  const legendTitle = legendLayerConfig
+    ? `${legendLayerConfig.groupName || tr('common.none')} ${legendLayerConfig.name || tr('common.none')}`
+    : '';
 
   useEffect(() => {
     if (!mapRef.current || leafletMapRef.current) {
@@ -618,6 +655,16 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
   return (
     <main className="map-shell">
       <div ref={mapRef} className="map"></div>
+      {legendLayerConfig && (
+        <aside className="map-legend" aria-live="polite">
+          <div className="map-legend-title">{legendTitle}</div>
+          <div className="map-legend-scale" style={{ backgroundImage: legendGradient }}></div>
+          <div className="map-legend-range">
+            <span>{legendMin}</span>
+            <span>{legendMax}</span>
+          </div>
+        </aside>
+      )}
     </main>
   );
 });

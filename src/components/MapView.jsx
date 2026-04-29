@@ -139,14 +139,32 @@ function buildPointQueryUrl(layerConfig, lat, lon) {
 }
 
 function populateLayerRescale(layerConfig) {
-  const minValue = Number(layerConfig.colors_min);
-  const maxValue = Number(layerConfig.colors_max);
+  const meanValue = Number(layerConfig.mean);
+  const stdValue = Number(layerConfig.std);
 
-  if (Number.isFinite(minValue) && Number.isFinite(maxValue) && minValue !== maxValue) {
+  if (Number.isFinite(meanValue) && Number.isFinite(stdValue)) {
+    const minValue = meanValue - 3 * stdValue;
+    const maxValue = meanValue + 3 * stdValue;
     layerConfig.rescale = `${minValue},${maxValue}`;
   }
 
   return layerConfig;
+}
+
+function getRescaleRange(layerConfig) {
+  if (!layerConfig?.rescale) {
+    return { min: null, max: null };
+  }
+
+  const [minRaw, maxRaw] = String(layerConfig.rescale).split(',');
+  const minValue = Number(minRaw);
+  const maxValue = Number(maxRaw);
+
+  if (!Number.isFinite(minValue) || !Number.isFinite(maxValue)) {
+    return { min: null, max: null };
+  }
+
+  return { min: minValue, max: maxValue };
 }
 
 function getMegapixelStats(selectedConfigs, bounds) {
@@ -402,8 +420,9 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
   }, [i18n.language]);
 
   const legendGradient = getColormapGradient(legendLayerConfig?.colormap);
-  const legendMin = formatLegendValue(legendLayerConfig?.colors_min);
-  const legendMax = formatLegendValue(legendLayerConfig?.colors_max);
+  const legendRange = getRescaleRange(legendLayerConfig);
+  const legendMin = formatLegendValue(legendRange.min);
+  const legendMax = formatLegendValue(legendRange.max);
   const legendTitle = legendLayerConfig
     ? `${legendLayerConfig.groupName || tr('common.none')} ${legendLayerConfig.name || tr('common.none')}`
     : '';

@@ -20,7 +20,7 @@ bbox <- sf::st_bbox(c(xmin = 14.53062, ymin = 49.97673, xmax = 14.57542, ymax = 
 # Build the query parameters for the CZGrids API
 query <- c(
     url = URLencode(filename, reserved = TRUE),
-    coord_crs = URLencode("EPSG:4326", reserved = TRUE),
+    coord_crs = URLencode(stringr::str_glue("EPSG:{sf::st_crs(bbox)$epsg}"), reserved = TRUE),
     dst_crs = URLencode("EPSG:32633", reserved = TRUE),
     bidx = "1",
     resampling_method = "nearest",

@@ -5,7 +5,7 @@
       {
         "name": "01",
         "filename": "s3://1-0/czg1.0_tmax_offset_01.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -5.937142372131348,
         "max": 1.4460771083831787,
         "mean": -0.09361372888088226,
@@ -16,7 +16,7 @@
       {
         "name": "02",
         "filename": "s3://1-0/czg1.0_tmax_offset_02.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -5.6826653480529785,
         "max": 1.6658053398132324,
         "mean": 0.11884080618619919,
@@ -27,7 +27,7 @@
       {
         "name": "03",
         "filename": "s3://1-0/czg1.0_tmax_offset_03.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -5.3416666984558105,
         "max": 2.11226224899292,
         "mean": 0.45833295583724976,
@@ -38,7 +38,7 @@
       {
         "name": "04",
         "filename": "s3://1-0/czg1.0_tmax_offset_04.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -4.931726455688477,
         "max": 2.4601807594299316,
         "mean": 0.7975056767463684,
@@ -49,7 +49,7 @@
       {
         "name": "05",
         "filename": "s3://1-0/czg1.0_tmax_offset_05.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -4.554782867431641,
         "max": 2.67299485206604,
         "mean": 1.0354269742965698,
@@ -60,7 +60,7 @@
       {
         "name": "06",
         "filename": "s3://1-0/czg1.0_tmax_offset_06.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -4.865077495574951,
         "max": 2.8994436264038086,
         "mean": 1.1221734285354614,
@@ -71,7 +71,7 @@
       {
         "name": "07",
         "filename": "s3://1-0/czg1.0_tmax_offset_07.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -5.171693325042725,
         "max": 2.951045036315918,
         "mean": 1.016695499420166,
@@ -82,7 +82,7 @@
       {
         "name": "08",
         "filename": "s3://1-0/czg1.0_tmax_offset_08.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -5.392637252807617,
         "max": 2.560286045074463,
         "mean": 0.7472020387649536,
@@ -93,7 +93,7 @@
       {
         "name": "09",
         "filename": "s3://1-0/czg1.0_tmax_offset_09.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -5.6736226081848145,
         "max": 2.2552528381347656,
         "mean": 0.41114822030067444,
@@ -104,7 +104,7 @@
       {
         "name": "10",
         "filename": "s3://1-0/czg1.0_tmax_offset_10.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -6.016427516937256,
         "max": 1.886526346206665,
         "mean": 0.10695578902959824,
@@ -115,7 +115,7 @@
       {
         "name": "11",
         "filename": "s3://1-0/czg1.0_tmax_offset_11.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -6.074499130249023,
         "max": 1.5636720657348633,
         "mean": -0.08494970947504044,
@@ -126,7 +126,7 @@
       {
         "name": "12",
         "filename": "s3://1-0/czg1.0_tmax_offset_12.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -5.937142372131348,
         "max": 1.4460771083831787,
         "mean": -0.09361375123262405,
@@ -137,7 +137,7 @@
       {
         "name": "annual",
         "filename": "s3://1-0/czg1.0_tmax_offset_annual.tif",
-        "colormap": "magma",
+        "colormap": "rdbu_r",
         "min": -5.340062618255615,
         "max": 2.1127490997314453,
         "mean": 0.4612194299697876,
@@ -153,7 +153,7 @@
       {
         "name": "01",
         "filename": "s3://1-0/czg1.0_tmean_offset_01.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -3.1328513622283936,
         "max": 1.1980998516082764,
         "mean": -0.009367587976157665,
@@ -164,7 +164,7 @@
       {
         "name": "02",
         "filename": "s3://1-0/czg1.0_tmean_offset_02.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -3.16497802734375,
         "max": 1.4604191780090332,
         "mean": 0.08633288741111755,
@@ -175,7 +175,7 @@
       {
         "name": "03",
         "filename": "s3://1-0/czg1.0_tmean_offset_03.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -3.464524984359741,
         "max": 1.915500521659851,
         "mean": 0.0557825043797493,
@@ -186,7 +186,7 @@
       {
         "name": "04",
         "filename": "s3://1-0/czg1.0_tmean_offset_04.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -3.7437736988067627,
         "max": 2.150630474090576,
         "mean": -0.047989606857299805,
@@ -197,7 +197,7 @@
       {
         "name": "05",
         "filename": "s3://1-0/czg1.0_tmean_offset_05.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -3.859309196472168,
         "max": 1.9402669668197632,
         "mean": -0.18613949418067932,
@@ -208,7 +208,7 @@
       {
         "name": "06",
         "filename": "s3://1-0/czg1.0_tmean_offset_06.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -3.9388694763183594,
         "max": 1.745126724243164,
         "mean": -0.34737780690193176,
@@ -219,7 +219,7 @@
       {
         "name": "07",
         "filename": "s3://1-0/czg1.0_tmean_offset_07.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -4.133333683013916,
         "max": 1.5608235597610474,
         "mean": -0.5219741463661194,
@@ -230,7 +230,7 @@
       {
         "name": "08",
         "filename": "s3://1-0/czg1.0_tmean_offset_08.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -4.390700340270996,
         "max": 1.4760221242904663,
         "mean": -0.6632385849952698,
@@ -241,7 +241,7 @@
       {
         "name": "09",
         "filename": "s3://1-0/czg1.0_tmean_offset_09.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -4.456087112426758,
         "max": 1.4174320697784424,
         "mean": -0.6875253319740295,
@@ -252,7 +252,7 @@
       {
         "name": "10",
         "filename": "s3://1-0/czg1.0_tmean_offset_10.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -4.1118245124816895,
         "max": 1.2439578771591187,
         "mean": -0.5258803367614746,
@@ -263,7 +263,7 @@
       {
         "name": "11",
         "filename": "s3://1-0/czg1.0_tmean_offset_11.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -3.5409061908721924,
         "max": 1.1096168756484985,
         "mean": -0.2511858344078064,
@@ -274,7 +274,7 @@
       {
         "name": "12",
         "filename": "s3://1-0/czg1.0_tmean_offset_12.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -3.132624387741089,
         "max": 1.1980998516082764,
         "mean": -0.009367566555738449,
@@ -285,7 +285,7 @@
       {
         "name": "annual",
         "filename": "s3://1-0/czg1.0_tmean_offset_annual.tif",
-        "colormap": "cividis",
+        "colormap": "rdbu_r",
         "min": -3.755815267562866,
         "max": 1.4872163534164429,
         "mean": -0.2589610517024994,
@@ -301,7 +301,7 @@
       {
         "name": "01",
         "filename": "s3://1-0/czg1.0_tmin_offset_01.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -2.3431754112243652,
         "max": 3.6621673107147217,
         "mean": -0.13966479897499084,
@@ -312,7 +312,7 @@
       {
         "name": "02",
         "filename": "s3://1-0/czg1.0_tmin_offset_02.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -2.601052761077881,
         "max": 3.8891026973724365,
         "mean": -0.10991707444190979,
@@ -323,7 +323,7 @@
       {
         "name": "03",
         "filename": "s3://1-0/czg1.0_tmin_offset_03.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -3.5229272842407227,
         "max": 4.158660888671875,
         "mean": -0.36357203125953674,
@@ -334,7 +334,7 @@
       {
         "name": "04",
         "filename": "s3://1-0/czg1.0_tmin_offset_04.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -4.393533706665039,
         "max": 4.2834062576293945,
         "mean": -0.7353923916816711,
@@ -345,7 +345,7 @@
       {
         "name": "05",
         "filename": "s3://1-0/czg1.0_tmin_offset_05.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -4.837368011474609,
         "max": 4.2110090255737305,
         "mean": -1.1008163690567017,
@@ -356,7 +356,7 @@
       {
         "name": "06",
         "filename": "s3://1-0/czg1.0_tmin_offset_06.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -5.048967361450195,
         "max": 3.997781991958618,
         "mean": -1.4143160581588745,
@@ -367,7 +367,7 @@
       {
         "name": "07",
         "filename": "s3://1-0/czg1.0_tmin_offset_07.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -5.27501106262207,
         "max": 3.709428071975708,
         "mean": -1.638465404510498,
@@ -378,7 +378,7 @@
       {
         "name": "08",
         "filename": "s3://1-0/czg1.0_tmin_offset_08.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -5.455053329467773,
         "max": 3.4323487281799316,
         "mean": -1.7133259773254395,
@@ -389,7 +389,7 @@
       {
         "name": "09",
         "filename": "s3://1-0/czg1.0_tmin_offset_09.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -5.221522331237793,
         "max": 3.2352724075317383,
         "mean": -1.5564426183700562,
@@ -400,7 +400,7 @@
       {
         "name": "10",
         "filename": "s3://1-0/czg1.0_tmin_offset_10.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -4.27598762512207,
         "max": 3.2054216861724854,
         "mean": -1.1103248596191406,
@@ -411,7 +411,7 @@
       {
         "name": "11",
         "filename": "s3://1-0/czg1.0_tmin_offset_11.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -3.038029193878174,
         "max": 3.336352586746216,
         "mean": -0.5432335138320923,
@@ -422,7 +422,7 @@
       {
         "name": "12",
         "filename": "s3://1-0/czg1.0_tmin_offset_12.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -2.3431754112243652,
         "max": 3.6621673107147217,
         "mean": -0.13966484367847443,
@@ -433,7 +433,7 @@
       {
         "name": "annual",
         "filename": "s3://1-0/czg1.0_tmin_offset_annual.tif",
-        "colormap": "viridis",
+        "colormap": "rdbu_r",
         "min": -4.021942138671875,
         "max": 3.7182626724243164,
         "mean": -0.8803448677062988,

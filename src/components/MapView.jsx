@@ -16,6 +16,7 @@ function getColormapGradient(colormapName) {
   const key = String(colormapName || '').toLowerCase();
 
   const gradients = {
+    rdbu_r: 'linear-gradient(to right, #053061, #2166ac, #4393c3, #92c5de, #d1e5f0, #f7f7f7, #fddbc7, #f4a582, #d6604d, #b2182b, #67001f)',
     magma: 'linear-gradient(to right, #000004, #3b0f70, #8c2981, #de4968, #fe9f6d, #fcfdbf)',
     inferno: 'linear-gradient(to right, #000004, #320a5f, #781c6d, #bb3754, #ed6925, #fcffa4)',
     plasma: 'linear-gradient(to right, #0d0887, #5b02a3, #9a179b, #cb4679, #ed7953, #f0f921)',
@@ -139,15 +140,7 @@ function buildPointQueryUrl(layerConfig, lat, lon) {
 }
 
 function populateLayerRescale(layerConfig) {
-  const meanValue = Number(layerConfig.mean);
-  const stdValue = Number(layerConfig.std);
-
-  if (Number.isFinite(meanValue) && Number.isFinite(stdValue)) {
-    const minValue = meanValue - 3 * stdValue;
-    const maxValue = meanValue + 3 * stdValue;
-    layerConfig.rescale = `${minValue},${maxValue}`;
-  }
-
+  layerConfig.rescale = `-3,3`;
   return layerConfig;
 }
 

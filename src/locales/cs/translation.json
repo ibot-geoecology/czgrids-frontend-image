@@ -7,6 +7,14 @@
     "close": "Zavřít",
     "helpLink": "Nápověda"
   },
+  "citation": {
+    "prefix": "Pokud ve svém výzkumu používáte <strong>CzechGrids Micro</strong>, citujte prosím jak datový článek popisující metodiku, tak samotný dataset:",
+    "linkLabel": "CITATION",
+    "modalTitle": "Jak citovat CzechGrids Micro",
+    "modalBodyIntro": "Pro vědecké a odborné výstupy uveďte citaci metodického článku projektu CzechGrids Micro. Použijte prosím plný bibliografický záznam ze zveřejněného článku.",
+    "modalBodyFormatLabel": "Doporučený formát:",
+    "modalBodyFormat": "Autoři. Rok. Název metodického článku CzechGrids Micro. Název časopisu / zdroje. DOI."
+  },
   "layer": {
     "opacity": "Průhlednost vrstvy: {{value}} %"
   },

@@ -7,6 +7,14 @@
     "close": "Close",
     "helpLink": "Help"
   },
+  "citation": {
+    "prefix": "If you use <strong>CzechGrids Micro</strong> in your research, please cite both the data paper describing the methodology and the dataset itself:",
+    "linkLabel": "CITATION",
+    "modalTitle": "How to cite CzechGrids Micro",
+    "modalBodyIntro": "For scientific and professional outputs, cite the CzechGrids Micro methodology paper. Please use the full bibliographic reference from the published article.",
+    "modalBodyFormatLabel": "Recommended format:",
+    "modalBodyFormat": "Authors. Year. Title of the CzechGrids Micro methodology paper. Journal / source name. DOI."
+  },
   "layer": {
     "opacity": "Layer opacity: {{value}} %"
   },

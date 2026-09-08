@@ -11,10 +11,14 @@
   "citation": {
     "prefix": "If you use <strong>CzechGrids Micro</strong> in your research, please cite both the data paper describing the methodology and the dataset itself:",
     "linkLabel": "CITATION",
-    "modalTitle": "How to cite CzechGrids Micro",
-    "modalBodyIntro": "For scientific and professional outputs, cite the CzechGrids Micro methodology paper. Please use the full bibliographic reference from the published article.",
-    "modalBodyFormatLabel": "Recommended format:",
-    "modalBodyFormat": "Authors. Year. Title of the CzechGrids Micro methodology paper. Journal / source name. DOI."
+    "modalTitle": "Citation and data access",
+    "modalBodyIntro": "If you use <strong>CzechGrids Micro</strong> in your research, please cite both the data paper describing the methodology and the dataset itself.",
+    "methodologyHeading": "Methodology and data description",
+    "methodologyCitation": "Macek, M., Man, M., Brůna, J., Hederová, L., Klinerová, T., Prošek, J., Růžičková, A., Wild, J., & Kopecký, M. (2026). <em>CzechGrids Micro: microclimate temperature offset grids at 10 m resolution for the Czech Republic</em>. Earth System Science Data Discussions [preprint], in review. doi:10.5194/essd-2026-344",
+    "methodologyDescription": "The paper provides a detailed description of the input data, modelling methodology, validation, and interpretation of the CzechGrids Micro layers.",
+    "datasetHeading": "Dataset",
+    "datasetIntro": "The complete CzechGrids Micro dataset is available from Zenodo:",
+    "datasetCitation": "Macek, M., Man, M., Brůna, J., Hederová, L., Klinerová, T., Prošek, J., Růžičková, A., Wild, J., & Kopecký, M. (2026). <em>CzechGrids Micro</em> (Version 1.0) [Dataset]. Zenodo. doi:10.5281/zenodo.18472086"
   },
   "layer": {
     "opacity": "Layer opacity: {{value}} %"

@@ -161,15 +161,26 @@ export default function MainPage() {
         <>
           <div className="modal-backdrop fade show"></div>
           <div className="modal fade show d-block" tabIndex="-1" role="dialog" aria-modal="true" aria-labelledby="citationModalTitle">
-            <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title" id="citationModalTitle">{t('citation.modalTitle')}</h5>
                   <button type="button" className="btn-close" aria-label={t('app.close')} onClick={handleCloseCitation}></button>
                 </div>
                 <div className="modal-body">
-                  <p>{t('citation.modalBodyIntro')}</p>
-                  <p className="mb-0"><strong>{t('citation.modalBodyFormatLabel')}</strong> {t('citation.modalBodyFormat')}</p>
+                  <p>
+                    <Trans i18nKey="citation.modalBodyIntro" components={{ strong: <strong /> }} />
+                  </p>
+                  <p className="mb-1"><strong>{t('citation.methodologyHeading')}</strong></p>
+                  <p>
+                    <Trans i18nKey="citation.methodologyCitation" components={{ em: <em /> }} />
+                  </p>
+                  <p>{t('citation.methodologyDescription')}</p>
+                  <p className="mb-1"><strong>{t('citation.datasetHeading')}</strong></p>
+                  <p className="mb-1">{t('citation.datasetIntro')}</p>
+                  <p className="mb-0">
+                    <Trans i18nKey="citation.datasetCitation" components={{ em: <em /> }} />
+                  </p>
                 </div>
                 <div className="modal-footer">
                   <button type="button" className="btn btn-secondary" onClick={handleCloseCitation}>{t('app.close')}</button>

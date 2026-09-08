@@ -191,6 +191,7 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
   const { t, i18n } = useTranslation();
   const tRef = useRef(t);
   const mapRef = useRef(null);
+  const layerPanelContentRef = useRef(null);
   const leafletMapRef = useRef(null);
   const layerControlRef = useRef(null);
   const currentLeafletLayerRef = useRef(null);
@@ -454,7 +455,18 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
     });
 
     const baseLayers = { OpenStreetMap: osmLayer };
-    layerControlRef.current = L.control.groupedLayers(baseLayers, {}, { collapsed: false }).addTo(map);
+
+    const moveLayerControlToPanel = () => {
+      if (!layerControlRef.current || !layerPanelContentRef.current) {
+        return;
+      }
+
+      const controlContainer = layerControlRef.current.getContainer();
+
+      if (controlContainer) {
+        layerPanelContentRef.current.replaceChildren(controlContainer);
+      }
+    };
 
     map.pm.addControls({
       position: 'topleft',
@@ -629,6 +641,8 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
           layerControlRef.current.addOverlay(overlayLayer.layer, overlayLayer.label, overlayLayer.groupName);
         });
 
+        moveLayerControlToPanel();
+
         const defaultLayer = overlayLayers[0];
         defaultLayer.layer.addTo(map);
         selectedLeafletLayersRef.current.add(defaultLayer.layer);
@@ -659,6 +673,11 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
       map.off('pm:create', onCreate);
       map.off('pm:remove', onRemove);
       map.off('click', onMapClick);
+
+      if (layerPanelContentRef.current) {
+        layerPanelContentRef.current.replaceChildren();
+      }
+
       map.remove();
       leafletMapRef.current = null;
     };
@@ -666,17 +685,23 @@ const MapView = forwardRef(function MapView({ onUiStateChange }, ref) {
 
   return (
     <main className="map-shell">
-      <div ref={mapRef} className="map"></div>
-      {legendLayerConfig && (
-        <aside className="map-legend" aria-live="polite">
-          <div className="map-legend-title">{legendTitle}</div>
-          <div className="map-legend-scale" style={{ backgroundImage: legendGradient }}></div>
-          <div className="map-legend-range">
-            <span>{legendMin}</span>
-            <span>{legendMax}</span>
-          </div>
-        </aside>
-      )}
+      <section className="map-stage">
+        <div ref={mapRef} className="map"></div>
+        {legendLayerConfig && (
+          <aside className="map-legend" aria-live="polite">
+            <div className="map-legend-title">{legendTitle}</div>
+            <div className="map-legend-scale" style={{ backgroundImage: legendGradient }}></div>
+            <div className="map-legend-range">
+              <span>{legendMin}</span>
+              <span>{legendMax}</span>
+            </div>
+          </aside>
+        )}
+      </section>
+      <aside className="layers-panel" aria-label={t('app.layers')}>
+        <h2 className="layers-panel-title">{t('app.layers')}</h2>
+        <div ref={layerPanelContentRef} className="layers-panel-content"></div>
+      </aside>
     </main>
   );
 });

@@ -179,10 +179,76 @@ body {
   position: relative;
 }
 
+.map-stage {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 500px;
+  position: relative;
+  display: flex;
+}
+
 .map {
   flex: 1 1 auto;
   min-height: 500px;
+  min-width: 0;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.layers-panel {
+  flex: 0 0 240px;
+  width: 240px;
+  background: #f8fafc;
+  border-left: 1px solid #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.layers-panel-title {
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #0f172a;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.layers-panel-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem 0.6rem;
+}
+
+.layers-panel-content .leaflet-control {
+  margin: 0;
+}
+
+.layers-panel-content .leaflet-control-layers {
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.layers-panel-content .leaflet-control-layers-expanded {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.layers-panel-content .leaflet-control-layers-list {
+  overflow: visible;
+}
+
+.layers-panel-content .leaflet-control-layers-overlays {
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+  padding-bottom: 0;
 }
 
 .map-legend {
@@ -222,42 +288,6 @@ body {
   gap: 0.5rem;
   font-size: 0.72rem;
   font-variant-numeric: tabular-nums;
-}
-
-.leaflet-top.leaflet-right {
-  top: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.leaflet-right .leaflet-control {
-  margin-bottom: 10px;
-}
-
-.leaflet-control-layers-expanded {
-  display: flex;
-  flex-direction: column;
-  width: 150px;
-  height: calc(100% - 50px);
-  max-height: none;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.leaflet-control-layers-list {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.leaflet-control-layers-overlays {
-  height: auto;
-  max-height: none;
-  overflow: visible;
-  padding-right: 0.25rem;
-  padding-bottom: 0.25rem;
 }
 
 .error-alert {
@@ -320,8 +350,24 @@ body {
   }
 
   .map-shell {
-    height: 500px;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
     padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .map-stage {
+    height: 600px;
+    min-height: 600px;
+  }
+
+  .layers-panel {
+    flex: 0 0 600px;
+    width: 100%;
+    height: 600px;
+    border-left: 0;
+    border-top: 1px solid #cbd5e1;
   }
 
   .map-legend {
@@ -331,9 +377,6 @@ body {
     width: auto;
   }
 
-  .leaflet-control-layers-expanded {
-    width: 150px;
-  }
 }
 
 /* Help page */

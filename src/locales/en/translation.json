@@ -57,6 +57,10 @@
   },
   "help": {
     "title": "Help",
+    "aboutTitle": "About the dataset",
+    "aboutParagraph1": "CzechGridsMicro dataset contain monthly and annual microclimatic temperature offsets for the Czechia at very high resolution (10 m). Microclimate offsets represent as the difference between local microclimatic air temperature at 2 m height (incl. effects of vegetation cover and local topography) and elevation-corrected macroclimatic temperatures downscaled from the ERA5-Land climate reanalysis.",
+    "aboutParagraph2": "Temperature offsets are available as monthly average for daily mean, minimum, and maximum air temperature. Offsets were modelled using generalized additive models (GAM), trained on an extensive network of localities combining forest microclimate loggers (n = 554) and standard weather stations (n = 257), covering the period 2018–2024. The microclimate models used for continuous spatial predictions integrated local topography (slope, aspect, relative position, wind exposition, topographic wetness), vegetation structure (forest cover, canopy height, deciduous/evergreen cover), and urbanization proxies (VIIRS night light intensity) to capture spatially microclimatic effects.",
+    "aboutParagraph3": "The dataset consists of 36 (12 months x 3 variables) GeoTIFF rasters providing monthly temperature offsets and three annual average offset rasters that can be combined with downscaled ERA5-Land data to derive absolute microclimatic temperatures for arbitrary periods. The maps are intended to support ecological research, climate impact assessments and adaptation planning at fine spatial scales.",
     "titilerSection": "TiTiler – raster data source",
     "titilerDescription": "This application uses TiTiler to dynamically serve raster data in Cloud Optimized GeoTIFF (COG) format. TiTiler is an open-source service for working with raster data over an HTTP API.",
     "titilerLinkLabel": "TiTiler documentation",

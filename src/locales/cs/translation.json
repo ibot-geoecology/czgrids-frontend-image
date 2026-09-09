@@ -57,6 +57,10 @@
   },
   "help": {
     "title": "Nápověda",
+    "aboutTitle": "O datové sadě",
+    "aboutParagraph1": "Dataset CzechGridsMicro obsahuje mapové vrstvy odchylek mikroklimatu od makroklimatu pro Českou republiku ve velmi jemném prostorovém rozlišení (10 m). Mikroklimatické odchylky (offsety) představují rozdíl teploty vzduchu ve výšce 2m ovlivněné vegetací a lokálními vlivy terénu vůči makroklimatické teplotě korigované z reanalýzy ERA5-Land pro danou nadmořskou výšku. Offsety byly modelovány pomocí zobecněných aditivních modelů (GAM).",
+    "aboutParagraph2": "Teplotní offsety jsou dostupné jako měsíční hodnoty pro denní minimální, průměrné a maximální teploty. Pro odvození modelů byla využita data pocházející ze sítě mikroklimatických stanic Botanického ústavu Akademie věd ČR (n = 532), Výzkumného ústavu pro krajinu (n = 22)  a staničních měření ČHMÚ (n = 257) pro období 2018-2024. Model zahrnuje efekty lokální topografie (skon a orientace svahu, relativní pozice nad údolnicí, expozice vůči větru, topografický vlhkostní index), vegetace (zastoupení lesa v okolí, výška porostu, opadavost porostu) a městských tepelných ostrovů (proxi proměnná intenzita světel v noci z VIIRS).",
+    "aboutParagraph3": "Datová sada obsahuje celkem 36 vrstev (12 měsíců x 3 proměnné) ve formátu GeoTIFF s typickými měsíčními hodnotami offsetů a tři vrstvy pro roční průměrné ofsety, které mohou být přičteny k hodnotám reanalýzy ERA5-Land korigované na danou nadmořskou výšku pro získání absolutních hodnot pro zvolené období. Mapy jsou určené především jako podklad pro ekologické studie, a studie dopadů změn klimatu a adaptačních opatření v jemném prostorovém měřítku.",
     "titilerSection": "TiTiler – zdroj rastrových dat",
     "titilerDescription": "Tato aplikace využívá nástroj TiTiler pro dynamické poskytování rastrových dat ve formátu Cloud Optimized GeoTIFF (COG). TiTiler je open-source služba pro práci s rastrovými daty dostupná přes HTTP API.",
     "titilerLinkLabel": "Dokumentace TiTiler",

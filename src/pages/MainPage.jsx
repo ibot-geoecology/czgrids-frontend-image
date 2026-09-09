@@ -64,7 +64,11 @@ export default function MainPage() {
         <div className="page-header-inner">
           <div className="page-brand">
             <div className="page-brand-logo-block">
-              <img src="/logo.png" alt="Logo" className="page-logo" />
+              <img
+                src={i18n.language.startsWith('cs') ? '/logo_cs.png' : '/logo_en.png'}
+                alt="Logo"
+                className="page-logo"
+              />
               <p className="page-citation">
                 <Trans i18nKey="citation.prefix" components={{ strong: <strong /> }} />{' '}
                 <a href="#" onClick={handleOpenCitation} className="citation-link">

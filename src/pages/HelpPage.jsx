@@ -57,6 +57,13 @@ export default function HelpPage() {
 
       <div className="help-content">
         <section className="help-section">
+          <h2>{t('help.aboutTitle')}</h2>
+          <p>{t('help.aboutParagraph1')}</p>
+          <p>{t('help.aboutParagraph2')}</p>
+          <p>{t('help.aboutParagraph3')}</p>
+        </section>
+
+        <section className="help-section">
           <h2>{t('help.titilerSection')}</h2>
           <p>{t('help.titilerDescription')}</p>
           <p>
